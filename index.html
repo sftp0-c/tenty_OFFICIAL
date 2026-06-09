@@ -3,286 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP Foundation — Объект SCP-4228-RU</title>
+    <title>SCP Foundation — Досье SCP-4228-RU</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <canvas id="matrix-canvas"></canvas>
-
-    <div id="access-screen">
-        <div class="access-bg"></div>
-        <div class="access-particles"></div>
-        <div class="door door-left">
-            <div class="door-detail"></div>
-            <div class="door-stripe"></div>
-            <div class="door-label">BLAST DOOR L-7</div>
-        </div>
-        <div class="door door-right">
-            <div class="door-detail"></div>
-            <div class="door-stripe"></div>
-            <div class="door-label">BLAST DOOR R-7</div>
-        </div>
-        <div class="card-reader" id="cardReader">
-            <div class="reader-body">
-                <div class="reader-top-line"></div>
-                <div class="reader-icon">⬡</div>
-                <div class="reader-slot"></div>
-                <div class="reader-light" id="readerLight"></div>
-                <p class="reader-text">ПРОВЕДИТЕ КАРТУ ДОСТУПА</p>
-                <p class="reader-hint">↓ Свайп вниз ↓</p>
-                <div class="reader-bottom-line"></div>
+    <!-- COVER -->
+    <div id="cover-screen">
+        <div class="desk-surface"></div>
+        <div class="desk-lamp"></div>
+        <div class="dust-particles"></div>
+        <div class="folder" id="folder">
+            <div class="folder-tab">SCP-4228-RU</div>
+            <div class="folder-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+            <div class="folder-stamp-2">КЕТЕР</div>
+            <div class="folder-classification">УРОВЕНЬ ДОПУСКА: 4/4228</div>
+            <div class="folder-logo">
+                <div class="folder-logo-circle">SCP</div>
             </div>
-            <div class="card" id="accessCard">
-                <div class="card-chip"></div>
-                <div class="card-text">LEVEL 5 CLEARANCE</div>
-                <div class="card-id">ID: O5-████-7721</div>
-            </div>
+            <div class="folder-wear"></div>
+            <div class="folder-instruction">Нажмите чтобы открыть</div>
         </div>
     </div>
 
-    <div id="main-content" class="hidden">
-        <div class="scanlines"></div>
-        <div class="flicker-overlay"></div>
-        <div class="vignette"></div>
+    <!-- MAIN DOCUMENT -->
+    <div id="document-container" class="hidden">
+        <div class="desk-bg"></div>
+        <div class="lamp-light"></div>
+        <div class="dust-particles"></div>
 
-        <div class="warning-corner warning-tl">⚠ WARNING: KETER CLASS</div>
-        <div class="warning-corner warning-tr">◉ REC 24/7</div>
-        <div class="warning-corner warning-bl">SITE-██ | SECTOR 7</div>
-        <div class="warning-corner warning-br">⚠ CONTAINMENT ACTIVE</div>
-
-        <div class="top-bar">
-            <div class="top-bar-left">
-                <span class="bar-dot active"></span>
-                <span>SECURE CONNECTION</span>
-            </div>
-            <div class="top-bar-center">SCP FOUNDATION DATABASE</div>
-            <div class="top-bar-right">
-                <span>TERMINAL #4228</span>
-                <span class="bar-dot active"></span>
-            </div>
-        </div>
-
-        <header class="scp-header">
-            <div class="header-grid">
-                <div class="header-line"></div>
-                <div class="scp-logo">
-                    <div class="logo-outer">
-                        <div class="logo-circle">
-                            <span>SCP</span>
-                        </div>
-                    </div>
-                    <div class="logo-rings"></div>
+        <div class="document">
+            <!-- Page header -->
+            <div class="doc-header">
+                <div class="doc-header-left">
+                    <div class="scp-emblem">SCP</div>
+                    <span class="doc-header-text">FOUNDATION</span>
                 </div>
-                <div class="header-line"></div>
+                <div class="doc-header-right">
+                    <span class="doc-class">СЕКРЕТНО</span>
+                    <span class="doc-date">14.03.2026</span>
+                </div>
+                <div class="doc-header-line"></div>
             </div>
-            <h1 class="glitch-title" data-text="SECURE. CONTAIN. PROTECT.">SECURE. CONTAIN. PROTECT.</h1>
-            <div class="header-meta">
-                <div class="meta-item">
-                    <span class="meta-label">КЛАСС ДОКУМЕНТА:</span>
-                    <span class="meta-value danger">СОВЕРШЕННО СЕКРЕТНО</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">УРОВЕНЬ ДОПУСКА:</span>
-                    <span class="meta-value">4/4228</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">ДНЕЙ БЕЗ ИНЦИДЕНТОВ:</span>
-                    <span class="meta-value danger" id="daysCount">0</span>
-                </div>
-            </div>
-        </header>
 
-        <main class="scp-document">
-            <div class="doc-border-top"></div>
+            <!-- Big red stamp -->
+            <div class="big-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+            <div class="big-stamp-2">КЕТЕР</div>
 
-            <section class="doc-section" id="section-header">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">01</div>
-                <h2 class="glitch-title" data-text="Объект №: SCP-4228-RU">Объект №: <span id="obj-number">SCP-4228-RU</span></h2>
-                <p class="codename">Кодовое имя: "<span id="obj-codename" class="typewriter"></span>"</p>
-                <div class="section-decoration">
-                    <div class="deco-line"></div>
-                    <div class="deco-dot"></div>
-                    <div class="deco-line"></div>
+            <!-- Staple holes -->
+            <div class="staple staple-1"></div>
+            <div class="staple staple-2"></div>
+
+            <!-- Coffee stain -->
+            <div class="coffee-stain"></div>
+
+            <!-- SECTION: Object number -->
+            <section class="doc-section" id="sec-header">
+                <h1 class="doc-title">Объект №: <span id="obj-number"></span></h1>
+                <p class="doc-subtitle">Кодовое имя: "<span id="obj-codename"></span>"</p>
+                <div class="margin-note" data-position="header" style="top: 10px; right: -30px;">
+                    <span class="note-arrow">←</span>
                 </div>
             </section>
 
-            <section class="doc-section" id="section-class">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">02</div>
-                <h3 class="glitch-title" data-text="Класс объекта">Класс объекта</h3>
-                <div class="class-display">
-                    <div class="class-badge keter" id="obj-class">
-                        <span class="class-icon">◆</span>
-                        <span class="class-text">КЕТЕР</span>
-                        <span class="class-icon">◆</span>
-                    </div>
-                    <div class="class-bar"></div>
-                    <p class="class-note" id="obj-class-note">(пересмотр на Аполлион — в процессе)</p>
+            <!-- SECTION: Class -->
+            <section class="doc-section" id="sec-class">
+                <h2 class="section-title">Класс объекта</h2>
+                <div class="class-box">
+                    <span class="class-name" id="obj-class"></span>
+                    <span class="class-note" id="obj-class-note"></span>
                 </div>
-                <div class="threat-level">
-                    <span class="threat-label">УРОВЕНЬ УГРОЗЫ:</span>
-                    <div class="threat-bar">
-                        <div class="threat-fill"></div>
-                    </div>
-                    <span class="threat-value">● ЧЁРНЫЙ</span>
-                </div>
+                <div class="underline-hand"></div>
             </section>
 
-            <section class="doc-section" id="section-containment">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">03</div>
-                <h3 class="glitch-title" data-text="Особые условия содержания">Особые условия содержания</h3>
-                <div class="containment-warning">
-                    <span>⚠</span> НЕСОБЛЮДЕНИЕ ПРОТОКОЛА = НЕМИНУЕМАЯ ГИБЕЛЬ <span>⚠</span>
-                </div>
+            <!-- SECTION: Containment -->
+            <section class="doc-section" id="sec-containment">
+                <h2 class="section-title">Особые условия содержания</h2>
                 <div class="doc-text" id="obj-containment"></div>
+                <div class="margin-note margin-note-red" style="top: 20px; right: -20px;">ОПАСЕН!!!</div>
             </section>
 
-            <section class="doc-section" id="section-discovery">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">04</div>
-                <h3 class="glitch-title" data-text="История обнаружения">История обнаружения</h3>
-                <div class="discovery-tag">
-                    <span class="tag-icon">◉</span>
-                    <span>ТКПСТ, г. Тюмень — ██.03.2026</span>
+            <!-- SECTION: Discovery -->
+            <section class="doc-section" id="sec-discovery">
+                <h2 class="section-title">История обнаружения</h2>
+                <div class="location-tag">
+                    <span class="tag-pin">📌</span> ТКПСТ, г. Тюмень — 14.03.2026
                 </div>
                 <div class="doc-text" id="obj-discovery"></div>
+                <div class="margin-note margin-note-blue" style="top: 180px; right: -20px;">← парта в музей попала</div>
             </section>
 
-            <section class="doc-section" id="section-description">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">05</div>
-                <h3 class="glitch-title" data-text="Описание">Описание</h3>
+            <!-- SECTION: Description -->
+            <section class="doc-section" id="sec-description">
+                <h2 class="section-title">Описание</h2>
                 <div class="doc-text" id="obj-description"></div>
-                <div class="photo-grid" id="photo-grid"></div>
+                <div class="margin-note margin-note-red" style="top: 5px; right: -20px;">НЕ ПРИБЛИЖАТЬСЯ</div>
             </section>
 
-            <section class="doc-section" id="section-abilities">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">06</div>
-                <h3 class="glitch-title" data-text="Аномальные свойства">Аномальные свойства</h3>
+            <!-- Photos as polaroids -->
+            <section class="doc-section" id="sec-photos">
+                <h2 class="section-title">Визуальные материалы</h2>
+                <div class="polaroid-grid" id="photo-grid"></div>
+            </section>
+
+            <!-- SECTION: Abilities -->
+            <section class="doc-section" id="sec-abilities">
+                <h2 class="section-title">Аномальные свойства</h2>
                 <div id="abilities-list"></div>
             </section>
 
-            <section class="doc-section" id="section-phobia">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">07</div>
-                <h3 class="glitch-title" data-text="Фобии и слабости">Фобии и слабости</h3>
-                <div class="classified-block" id="phobia-block">
-                    <div class="classified-border"></div>
-                    <div class="classified-icon">🔒</div>
-                    <p class="classified-text">ДАННЫЕ ЗАСЕКРЕЧЕНЫ</p>
-                    <p class="classified-sub">ТРЕБУЕТСЯ КОД АВТОРИЗАЦИИ O5</p>
-                    <div class="classified-border"></div>
+            <!-- SECTION: Phobia -->
+            <section class="doc-section" id="sec-phobia">
+                <h2 class="section-title">Фобии и слабости</h2>
+                <div class="classified-folder" id="phobia-classified">
+                    <div class="classified-tape"></div>
+                    <div class="classified-label">ЗАСЕКРЕЧЕНО — УРОВЕНЬ O5</div>
+                    <div class="classified-tape bottom"></div>
                 </div>
-                <div class="revealed-content hidden" id="phobia-content"></div>
+                <div class="revealed-section hidden" id="phobia-revealed">
+                    <div class="doc-text" id="phobia-text"></div>
+                    <div class="video-slot" id="phobia-video"></div>
+                </div>
             </section>
 
-            <section class="doc-section" id="section-incidents">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">08</div>
-                <h3 class="glitch-title" data-text="Зарегистрированные инциденты">Зарегистрированные инциденты</h3>
+            <!-- SECTION: Incidents -->
+            <section class="doc-section" id="sec-incidents">
+                <h2 class="section-title">Зарегистрированные инциденты</h2>
                 <div id="incidents-list"></div>
             </section>
 
-            <section class="doc-section" id="section-notes">
-                <div class="section-bar"></div>
-                <div class="section-corner tl"></div>
-                <div class="section-corner tr"></div>
-                <div class="section-corner bl"></div>
-                <div class="section-corner br"></div>
-                <div class="section-number">09</div>
-                <h3 class="glitch-title" data-text="Примечания персонала">Примечания персонала</h3>
+            <!-- SECTION: Notes -->
+            <section class="doc-section" id="sec-notes">
+                <h2 class="section-title">Примечания персонала</h2>
                 <div id="notes-list"></div>
             </section>
 
-            <section class="o5-access" id="o5-section">
-                <div class="o5-frame">
-                    <div class="o5-header">
-                        <span class="o5-icon">⬡</span>
-                        <span>ТЕРМИНАЛ СОВЕТА O5</span>
-                        <span class="o5-icon">⬡</span>
-                    </div>
-                    <div class="o5-terminal">
-                        <p class="o5-prompt">&gt; ВВЕДИТЕ КОД АВТОРИЗАЦИИ_</p>
-                        <input type="text" id="o5-input" class="o5-input" placeholder="_ _ _ _ _ _ _ _ _ _ _ _" autocomplete="off" spellcheck="false">
-                        <p class="o5-status" id="o5-status"></p>
-                        <div class="o5-decoration">
-                            <div class="o5-deco-line"></div>
-                            <div class="o5-deco-dot"></div>
-                            <div class="o5-deco-line"></div>
-                        </div>
-                    </div>
+            <!-- O5 Access sticky note -->
+            <section class="doc-section" id="sec-o5">
+                <div class="sticky-note" id="o5-sticky">
+                    <div class="sticky-tape"></div>
+                    <p class="sticky-title">O5 EYES ONLY</p>
+                    <p class="sticky-desc">Код полного доступа:</p>
+                    <input type="text" id="o5-input" class="sticky-input" placeholder="введите код..." autocomplete="off" spellcheck="false">
+                    <p class="sticky-status" id="o5-status"></p>
                 </div>
             </section>
 
-            <div class="doc-border-bottom"></div>
-        </main>
-
-        <footer class="scp-footer">
-            <div class="footer-lines">
-                <div class="footer-line"></div>
-                <div class="footer-dot"></div>
-                <div class="footer-line"></div>
-            </div>
-            <p class="footer-main">SCP FOUNDATION — SECURE. CONTAIN. PROTECT.</p>
-            <p class="footer-classified">ДОКУМЕНТ КЛАССА: СОВЕРШЕННО СЕКРЕТНО // НЕСАНКЦИОНИРОВАННЫЙ ДОСТУП КАРАЕТСЯ ██████████</p>
-            <p class="footer-copy">© Foundation, Site-██, 2026</p>
-        </footer>
-    </div>
-
-    <div id="screamer" class="screamer hidden">
-        <div class="screamer-content">
-            <div class="screamer-face"></div>
+            <!-- Paper edge effects -->
+            <div class="paper-fold top-right"></div>
+            <div class="paper-fold bottom-left"></div>
         </div>
     </div>
 
-    <div id="unauthorized" class="unauthorized hidden">
-        <div class="unauth-content">
-            <div class="unauth-flash"></div>
-            <h1>⚠ НЕСАНКЦИОНИРОВАННЫЙ ДОСТУП ⚠</h1>
-            <p class="unauth-line">НАРУШЕНИЕ ПРОТОКОЛА БЕЗОПАСНОСТИ</p>
-            <p class="unauth-line">МЕСТОПОЛОЖЕНИЕ ЗАФИКСИРОВАНО</p>
-            <p class="unauth-line blink">ГРУППА РЕАГИРОВАНИЯ ВЫСЛАНА</p>
-        </div>
-    </div>
+    <!-- Screamer overlay -->
+    <div id="screamer" class="screamer hidden"></div>
+
+    <!-- Lamp flicker dark overlay -->
+    <div id="blackout" class="blackout hidden"></div>
 
     <script src="script.js"></script>
 </body>
