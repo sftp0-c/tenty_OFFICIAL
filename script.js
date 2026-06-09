@@ -353,6 +353,12 @@
         initMorseCode();
         initDragClassified();
         initMatrixRain();
+        initNotifications();
+        initChat();
+        initCameras();
+        initAudioPlayer();
+        initIncidentMap();
+        initEasterEggs();
     }
 
     // --- 1. COMMAND LINE: пользователь может вводить команды ---
@@ -620,6 +626,316 @@
         window.addEventListener('resize', () => {
             columns = Math.floor(canvas.width / fontSize);
             drops = Array(columns).fill(1);
+        });
+    }
+
+    // --- 7. NOTIFICATIONS: случайные уведомления каждые 10-20 сек ---
+    function initNotifications() {
+        const messages = [
+            { text: 'Объект в состоянии покоя', level: 'green' },
+            { text: 'Камера 2 — сигнал стабилен', level: 'green' },
+            { text: 'Плановая проверка систем', level: 'green' },
+            { text: 'Смена охраны через 47 мин', level: 'green' },
+            { text: 'Лёгкое повышение температуры объекта', level: 'orange' },
+            { text: 'Обнаружен скачок ЭМ-поля в секторе 7', level: 'orange' },
+            { text: 'Объект переместился к стене камеры', level: 'orange' },
+            { text: 'Нестабильность в контуре охлаждения', level: 'orange' },
+            { text: 'Радиация превышает норму в 12 раз', level: 'red' },
+            { text: 'Объект пытается установить визуальный контакт', level: 'red' },
+            { text: 'Аномальная активность — усилена охрана', level: 'red' },
+            { text: 'Фиксация сейсмической активности в камере', level: 'red' },
+            { text: 'ПОТЕРЯ СВЯЗИ С КАМЕРОЙ 3', level: 'black' },
+            { text: 'ОБЪЕКТ ВСТАЛ. ПОВТОРЯЮ: ОБЪЕКТ ВСТАЛ.', level: 'black' },
+            { text: 'ФИКСАЦИЯ ПОПЫТКИ ВЗЛОМА СИСТЕМЫ', level: 'black' },
+        ];
+
+        function showNotification() {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            const container = document.getElementById('notifications');
+            const el = document.createElement('div');
+            el.className = 'notification notif-' + msg.level;
+            el.innerHTML = `<span class="notif-dot">●</span> ${msg.text}`;
+            container.appendChild(el);
+
+            if (msg.level === 'red' || msg.level === 'black') playBeep(300, 0.08, 0.15);
+            else playBeep(1200, 0.02, 0.03);
+
+            setTimeout(() => { el.classList.add('notif-fade'); }, 4000);
+            setTimeout(() => { el.remove(); }, 5000);
+
+            const next = 10000 + Math.random() * 10000;
+            setTimeout(showNotification, next);
+        }
+
+        setTimeout(showNotification, 5000);
+    }
+
+    // --- 8. CHAT with object ---
+    function initChat() {
+        const toggle = document.getElementById('chat-toggle');
+        const body = document.getElementById('chat-body');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+        const indicator = document.getElementById('chat-indicator');
+
+        const responses = {
+            'привет': ['...', 'Кто ты?', 'Не надо со мной разговаривать.'],
+            'как дела': ['Холодно.', 'Как думаешь?', 'Мне нужен Wi-Fi.'],
+            'кто ты': ['SCP-4228-RU. Или просто Максим.', 'А кто ТЫ?'],
+            'выйди': ['Я бы мог. Но некуда идти.', 'Не провоцируй.'],
+            'мама': ['...не надо.', 'Она знает что я здесь?'],
+            'побег': ['Я пробивал 5 дверей за 23 секунды. Потом остановился.', 'Зачем?'],
+            'сила': ['8400 кН. Это как поезд. Только быстрее.', 'Хочешь проверить?'],
+            'страх': ['НЕ ГОВОРИ ОБ ЭТОМ.', '...мухи. Только не мухи.'],
+            'wifi': ['Дали. Изолированная сеть. Скорость ужасная.', 'YouTube хотя бы работает.'],
+        };
+
+        const defaultResponses = [
+            '...',
+            'Я слышу тебя.',
+            'Интересно.',
+            'Зачем тебе это знать?',
+            'Мне скучно. Продолжай.',
+            'Ты тоже из Фонда?',
+            'Когда будет ужин?',
+        ];
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('hidden');
+            indicator.style.color = 'var(--green)';
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' || !input.value.trim()) return;
+            const text = input.value.trim();
+            input.value = '';
+
+            addMessage('user', text);
+            indicator.style.color = 'var(--yellow)';
+
+            const key = Object.keys(responses).find(k => text.toLowerCase().includes(k));
+            const pool = key ? responses[key] : defaultResponses;
+            const reply = pool[Math.floor(Math.random() * pool.length)];
+
+            const delay = 1000 + Math.random() * 2000;
+            setTimeout(() => {
+                addMessage('obj', reply);
+                indicator.style.color = 'var(--green)';
+                playBeep(400, 0.04, 0.08);
+            }, delay);
+        });
+
+        function addMessage(who, text) {
+            const el = document.createElement('div');
+            el.className = 'chat-msg chat-' + who;
+            el.textContent = (who === 'user' ? 'ВЫ: ' : 'SCP-4228: ') + text;
+            messages.appendChild(el);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Random messages from object
+        setInterval(() => {
+            if (body.classList.contains('hidden')) {
+                indicator.style.color = 'var(--red)';
+                indicator.style.animation = 'blink-fast 0.5s 3';
+                setTimeout(() => { indicator.style.animation = ''; }, 1500);
+            }
+        }, 45000 + Math.random() * 30000);
+    }
+
+    // --- 9. CAMERAS ---
+    function initCameras() {
+        const camData = {
+            '1': { text: 'Объект лежит на койке.\nДвижение: 0%\nТемпература камеры: 22°C\nСтатус: НЕАКТИВЕН', status: 'stable' },
+            '2': { text: '[ СТАТИКА ]\n\nКамера перезагружается...\nПоследний кадр: 00:14:33\nПричина сбоя: ЭМ-помеха', status: 'offline' },
+            '3': { text: 'Коридор B-7, Площадка-17\nДвижение: обнаружено\nОхрана: 2 сотрудника\nТревога: НЕТ', status: 'active' },
+        };
+
+        const tabs = document.querySelectorAll('.cam-tab');
+        const content = document.getElementById('cam-content');
+        const timeEl = document.getElementById('cam-time');
+
+        function showCam(id) {
+            const cam = camData[id];
+            content.innerHTML = `<pre class="cam-text">${cam.text}</pre>`;
+            content.className = 'cam-content cam-' + cam.status;
+            playBeep(500, 0.03, 0.05);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                showCam(tab.dataset.cam);
+            });
+        });
+
+        showCam('1');
+
+        setInterval(() => {
+            timeEl.textContent = new Date().toTimeString().slice(0, 8);
+        }, 1000);
+    }
+
+    // --- 10. AUDIO PLAYER ---
+    function initAudioPlayer() {
+        const tracks = [
+            { name: 'Intercept #1 — Шёпот', type: 'whisper' },
+            { name: 'Intercept #2 — Стук', type: 'knock' },
+            { name: 'Intercept #3 — Помехи', type: 'static' },
+            { name: 'Intercept #4 — Дыхание', type: 'breath' },
+        ];
+
+        const container = document.getElementById('audio-tracks');
+        tracks.forEach((track, i) => {
+            const el = document.createElement('div');
+            el.className = 'audio-track';
+            el.innerHTML = `<span class="audio-name">${track.name}</span><button class="audio-play" data-type="${track.type}">▶</button>`;
+            container.appendChild(el);
+        });
+
+        container.addEventListener('click', (e) => {
+            const btn = e.target.closest('.audio-play');
+            if (!btn) return;
+            playAudioTrack(btn.dataset.type);
+            btn.textContent = '■';
+            setTimeout(() => { btn.textContent = '▶'; }, 2000);
+        });
+
+        function playAudioTrack(type) {
+            try {
+                const ctx = getAudio();
+                const dur = 2;
+                const buffer = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                if (type === 'whisper') {
+                    for (let i = 0; i < data.length; i++) {
+                        const t = i / ctx.sampleRate;
+                        data[i] = (Math.random() - 0.5) * 0.03 * Math.sin(t * 200) * Math.exp(-t * 0.5);
+                    }
+                } else if (type === 'knock') {
+                    for (let i = 0; i < data.length; i++) {
+                        const t = i / ctx.sampleRate;
+                        const knock1 = t > 0.1 && t < 0.13 ? Math.sin(t * 500) * 0.4 * Math.exp(-(t-0.1)*50) : 0;
+                        const knock2 = t > 0.5 && t < 0.53 ? Math.sin(t * 500) * 0.35 * Math.exp(-(t-0.5)*50) : 0;
+                        const knock3 = t > 0.9 && t < 0.93 ? Math.sin(t * 500) * 0.3 * Math.exp(-(t-0.9)*50) : 0;
+                        data[i] = knock1 + knock2 + knock3;
+                    }
+                } else if (type === 'static') {
+                    for (let i = 0; i < data.length; i++) {
+                        const t = i / ctx.sampleRate;
+                        data[i] = (Math.random() - 0.5) * 0.15 * (1 - t/dur);
+                    }
+                } else if (type === 'breath') {
+                    for (let i = 0; i < data.length; i++) {
+                        const t = i / ctx.sampleRate;
+                        data[i] = (Math.random() - 0.5) * 0.04 * Math.sin(t * Math.PI / 1.5) * Math.sin(t * 80);
+                    }
+                }
+
+                const source = ctx.createBufferSource();
+                source.buffer = buffer;
+                const gain = ctx.createGain();
+                gain.gain.value = 0.5;
+                source.connect(gain);
+                gain.connect(ctx.destination);
+                source.start();
+            } catch(e) {}
+        }
+    }
+
+    // --- 11. INCIDENT MAP ---
+    function initIncidentMap() {
+        const mapEl = document.getElementById('incident-map');
+        if (!mapEl) return;
+
+        const points = [
+            { x: 62, y: 35, label: 'Тюмень — Alpha', level: 'red' },
+            { x: 58, y: 28, label: 'Площадка-17 — Beta/Gamma/Delta', level: 'black' },
+            { x: 45, y: 42, label: 'Екатеринбург — мониторинг', level: 'green' },
+            { x: 70, y: 20, label: 'Салехард — агент', level: 'orange' },
+        ];
+
+        let mapHtml = `<div class="map-grid">`;
+        mapHtml += `<div class="map-title">WESTERN SIBERIA — INCIDENT MAP</div>`;
+        points.forEach(p => {
+            mapHtml += `<div class="map-point map-${p.level}" style="left:${p.x}%;top:${p.y}%" title="${p.label}"><span class="map-tooltip">${p.label}</span></div>`;
+        });
+        mapHtml += `<div class="map-legend">
+            <span class="map-leg-item"><span class="map-dot map-green"></span>МОНИТОРИНГ</span>
+            <span class="map-leg-item"><span class="map-dot map-orange"></span>АКТИВНОСТЬ</span>
+            <span class="map-leg-item"><span class="map-dot map-red"></span>ИНЦИДЕНТ</span>
+            <span class="map-leg-item"><span class="map-dot map-black"></span>КРИТИЧЕСКИЙ</span>
+        </div>`;
+        mapHtml += `</div>`;
+        mapEl.innerHTML = mapHtml;
+    }
+
+    // --- 12. EASTER EGGS ---
+    function initEasterEggs() {
+        // Konami code
+        const konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
+        let konamiIndex = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.code === konamiSequence[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiSequence.length) {
+                    konamiIndex = 0;
+                    activateKonami();
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+
+        function activateKonami() {
+            const msg = document.createElement('div');
+            msg.className = 'easter-msg';
+            msg.innerHTML = '🎮 CHEAT ACTIVATED<br><span class="t-dim">SCP-4228-RU says: "Я знал что ты попробуешь."</span>';
+            document.body.appendChild(msg);
+            playGranted();
+            document.body.style.filter = 'hue-rotate(90deg)';
+            setTimeout(() => { document.body.style.filter = ''; }, 5000);
+            setTimeout(() => msg.remove(), 5000);
+        }
+
+        // Triple click on logo
+        let logoClicks = 0;
+        const logo = document.querySelector('.term-logo');
+        if (logo) {
+            logo.style.cursor = 'pointer';
+            logo.addEventListener('click', () => {
+                logoClicks++;
+                if (logoClicks === 3) {
+                    logoClicks = 0;
+                    const msg = document.createElement('div');
+                    msg.className = 'easter-msg';
+                    msg.innerHTML = '👁 HIDDEN FILE FOUND<br><span class="t-dim">/scp/4228/.hidden: "Он видит этот экран прямо сейчас."</span>';
+                    document.body.appendChild(msg);
+                    playBeep(200, 0.1, 0.3);
+                    setTimeout(() => msg.remove(), 4000);
+                }
+                setTimeout(() => { logoClicks = 0; }, 800);
+            });
+        }
+
+        // Click photo 4 times fast
+        let photoClicks = 0;
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.photo-item')) {
+                photoClicks++;
+                if (photoClicks >= 4) {
+                    photoClicks = 0;
+                    const msg = document.createElement('div');
+                    msg.className = 'easter-msg';
+                    msg.innerHTML = '📁 SECRET ATTACHMENT<br><span class="t-dim">"Он улыбался на этом фото. Мы удалили улыбку из базы."</span>';
+                    document.body.appendChild(msg);
+                    playBeep(150, 0.08, 0.2);
+                    setTimeout(() => msg.remove(), 4000);
+                }
+                setTimeout(() => { if (photoClicks > 0) photoClicks--; }, 1000);
+            }
         });
     }
 

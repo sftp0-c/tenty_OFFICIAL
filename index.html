@@ -163,6 +163,15 @@
                 </div>
             </section>
 
+            <!-- Section: Map -->
+            <section class="term-section" data-section="map">
+                <div class="term-prompt">&gt; map --incidents --region=west-siberia</div>
+                <div class="term-output">
+                    <div class="section-label">[ КАРТА ИНЦИДЕНТОВ ]</div>
+                    <div class="incident-map" id="incident-map"></div>
+                </div>
+            </section>
+
             <!-- Section: O5 Access -->
             <section class="term-section" data-section="o5">
                 <div class="term-prompt">&gt; sudo access --level=O5 --dossier=4228</div>
@@ -191,6 +200,46 @@
             </div>
         </footer>
 
+    </div>
+
+    <!-- Notifications -->
+    <div id="notifications" class="notifications-container"></div>
+
+    <!-- Chat widget -->
+    <div class="chat-widget" id="chat-widget">
+        <div class="chat-header" id="chat-toggle">
+            <span>◈ COMMS — SCP-4228</span>
+            <span class="chat-indicator" id="chat-indicator">●</span>
+        </div>
+        <div class="chat-body hidden" id="chat-body">
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" class="chat-input" placeholder="написать объекту..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera system -->
+    <div class="cameras-widget" id="cameras-widget">
+        <div class="cam-tabs">
+            <button class="cam-tab active" data-cam="1">CAM-1</button>
+            <button class="cam-tab" data-cam="2">CAM-2</button>
+            <button class="cam-tab" data-cam="3">CAM-3</button>
+        </div>
+        <div class="cam-screen" id="cam-screen">
+            <div class="cam-static"></div>
+            <div class="cam-content" id="cam-content"></div>
+            <div class="cam-overlay">
+                <span class="cam-rec">● REC</span>
+                <span class="cam-time" id="cam-time"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio player -->
+    <div class="audio-widget" id="audio-widget">
+        <div class="audio-header">AUDIO INTERCEPTS</div>
+        <div class="audio-tracks" id="audio-tracks"></div>
     </div>
 
     <!-- Screamer -->
