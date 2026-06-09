@@ -150,5 +150,52 @@
       "position": "incident-gamma",
       "color": "blue"
     }
-  ]
+  ],
+  "notifications": [
+    {
+      "text": "порядок",
+      "level": "green"
+    },
+    {
+      "text": "объект обосрался",
+      "level": "orange"
+    },
+    {
+      "text": "объект в фазе страсти",
+      "level": "red"
+    }
+  ],
+  "chat_phrases": [
+    {
+      "key": "привет",
+      "responses": [
+        "не говори"
+      ]
+    },
+    {
+      "key": "пошел нахуй",
+      "responses": [
+        "курица-помада"
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "id": "1",
+      "text": "Объект лежит на койке.",
+      "status": "stable"
+    },
+    {
+      "id": "2",
+      "text": "[ СТАТИКА ]",
+      "status": "offline"
+    },
+    {
+      "id": "3",
+      "text": "Коридор B-7",
+      "status": "active"
+    }
+  ],
+  "boot_lines": [],
+  "easter_eggs": []
 }
