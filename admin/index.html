@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel — SCP-4228-RU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
     <div id="login-screen">
         <div class="login-container">
+            <div class="login-logo">SCP</div>
             <h1>ADMIN ACCESS</h1>
-            <p class="login-subtitle">SCP Foundation — Panel</p>
+            <p class="login-subtitle">SCP Foundation — Content Management</p>
             <form id="login-form">
                 <div class="input-group">
-                    <label>LOGIN</label>
-                    <input type="text" id="login-input" autocomplete="off">
+                    <label>IDENTIFICATION CODE</label>
+                    <input type="text" id="login-input" autocomplete="off" placeholder="введите код...">
                 </div>
                 <button type="submit" class="btn-login">АВТОРИЗАЦИЯ</button>
                 <p id="login-error" class="error"></p>
@@ -25,86 +26,196 @@
 
     <div id="admin-panel" class="hidden">
         <header class="admin-header">
-            <h1>SCP-4228-RU — Admin Panel</h1>
+            <div class="header-left">
+                <div class="header-logo">SCP</div>
+                <h1>SCP-4228-RU — Панель управления</h1>
+            </div>
             <div class="header-actions">
                 <span id="save-status"></span>
+                <button id="btn-preview" class="btn-preview">ПРЕВЬЮ</button>
                 <button id="btn-save" class="btn-save">СОХРАНИТЬ</button>
                 <button id="btn-logout" class="btn-logout">ВЫХОД</button>
             </div>
         </header>
 
+        <!-- TABS -->
+        <div class="tabs-container">
+            <button class="tab active" data-tab="standard">СТАНДАРТНАЯ ВЕРСИЯ</button>
+            <button class="tab" data-tab="o5">O5 ВЕРСИЯ (REVEALED)</button>
+            <button class="tab" data-tab="photos">ФОТОГРАФИИ</button>
+            <button class="tab" data-tab="settings">НАСТРОЙКИ</button>
+        </div>
+
         <main class="admin-content">
-            <div class="admin-section">
-                <h2>GitHub Token</h2>
-                <p class="section-hint">Введите один раз — сохраняется в браузере</p>
-                <input type="password" id="github-token" class="full-input" placeholder="ghp_...">
-            </div>
-
-            <div class="admin-section">
-                <h2>Основная информация</h2>
-                <div class="field-group">
-                    <label>Номер объекта</label>
-                    <input type="text" id="edit-number" class="full-input">
+            <!-- TAB: Standard version -->
+            <div class="tab-panel active" id="panel-standard">
+                <div class="panel-header">
+                    <h2>Стандартная версия</h2>
+                    <p class="panel-desc">Контент, который видят все до ввода кода O5. Используйте ████ для цензуры.</p>
                 </div>
-                <div class="field-group">
-                    <label>Кодовое имя</label>
-                    <input type="text" id="edit-codename" class="full-input">
+
+                <div class="admin-section">
+                    <h3>Основная информация</h3>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Номер объекта</label>
+                            <input type="text" id="edit-number" class="full-input">
+                        </div>
+                        <div class="field-group">
+                            <label>Кодовое имя</label>
+                            <input type="text" id="edit-codename" class="full-input">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Класс</label>
+                            <input type="text" id="edit-class" class="full-input">
+                        </div>
+                        <div class="field-group">
+                            <label>Примечание к классу</label>
+                            <input type="text" id="edit-class-note" class="full-input">
+                        </div>
+                    </div>
                 </div>
-                <div class="field-group">
-                    <label>Класс</label>
-                    <input type="text" id="edit-class" class="full-input">
+
+                <div class="admin-section">
+                    <h3>Условия содержания</h3>
+                    <textarea id="edit-containment" class="full-textarea" rows="8" placeholder="Текст с ████ для цензуры..."></textarea>
                 </div>
-                <div class="field-group">
-                    <label>Примечание к классу</label>
-                    <input type="text" id="edit-class-note" class="full-input">
+
+                <div class="admin-section">
+                    <h3>История обнаружения</h3>
+                    <textarea id="edit-discovery" class="full-textarea" rows="10" placeholder="Текст с ████ для цензуры..."></textarea>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Описание</h3>
+                    <textarea id="edit-description" class="full-textarea" rows="5" placeholder="Текст с ████ для цензуры..."></textarea>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Фобии и слабости</h3>
+                    <textarea id="edit-phobia" class="full-textarea" rows="5" placeholder="Текст с ████ для цензуры..."></textarea>
+                    <div class="field-group" style="margin-top:15px;">
+                        <label>URL видео (embed)</label>
+                        <input type="text" id="edit-phobia-video" class="full-input" placeholder="https://www.youtube.com/embed/...">
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Аномальные свойства</h3>
+                        <button id="btn-add-ability" class="btn-add">+ Добавить</button>
+                    </div>
+                    <div id="abilities-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Инциденты</h3>
+                        <button id="btn-add-incident" class="btn-add">+ Добавить</button>
+                    </div>
+                    <div id="incidents-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Примечания персонала</h3>
+                        <button id="btn-add-note" class="btn-add">+ Добавить</button>
+                    </div>
+                    <div id="notes-editor"></div>
                 </div>
             </div>
 
-            <div class="admin-section">
-                <h2>Условия содержания</h2>
-                <textarea id="edit-containment" class="full-textarea" rows="8"></textarea>
-            </div>
+            <!-- TAB: O5 revealed version -->
+            <div class="tab-panel" id="panel-o5">
+                <div class="panel-header panel-header-o5">
+                    <h2>O5 — Полная версия (Revealed)</h2>
+                    <p class="panel-desc">Контент, который появляется после ввода кода O5. Без цензуры, все данные открыты.</p>
+                </div>
 
-            <div class="admin-section">
-                <h2>История обнаружения</h2>
-                <textarea id="edit-discovery" class="full-textarea" rows="10"></textarea>
-            </div>
+                <div class="admin-section o5-section">
+                    <h3>Условия содержания (O5)</h3>
+                    <textarea id="edit-containment-revealed" class="full-textarea" rows="10" placeholder="Полный текст без цензуры..."></textarea>
+                </div>
 
-            <div class="admin-section">
-                <h2>Описание</h2>
-                <textarea id="edit-description" class="full-textarea" rows="4"></textarea>
-            </div>
+                <div class="admin-section o5-section">
+                    <h3>История обнаружения (O5)</h3>
+                    <textarea id="edit-discovery-revealed" class="full-textarea" rows="12" placeholder="Полный текст без цензуры..."></textarea>
+                </div>
 
-            <div class="admin-section">
-                <h2>Фотографии (URL)</h2>
-                <div id="photos-editor"></div>
-            </div>
+                <div class="admin-section o5-section">
+                    <h3>Описание (O5)</h3>
+                    <textarea id="edit-description-revealed" class="full-textarea" rows="6" placeholder="Полный текст без цензуры..."></textarea>
+                </div>
 
-            <div class="admin-section">
-                <h2>Аномальные свойства</h2>
-                <div id="abilities-editor"></div>
-                <button id="btn-add-ability" class="btn-add">+ Добавить свойство</button>
-            </div>
+                <div class="admin-section o5-section">
+                    <h3>Фобии и слабости (O5)</h3>
+                    <textarea id="edit-phobia-revealed" class="full-textarea" rows="6" placeholder="Полный текст без цензуры..."></textarea>
+                </div>
 
-            <div class="admin-section">
-                <h2>Фобии (скрытый контент)</h2>
-                <textarea id="edit-phobia" class="full-textarea" rows="4"></textarea>
-                <div class="field-group">
-                    <label>URL видео (embed)</label>
-                    <input type="text" id="edit-phobia-video" class="full-input" placeholder="https://www.youtube.com/embed/...">
+                <div class="admin-section o5-section">
+                    <div class="section-header-row">
+                        <h3>Аномальные свойства (O5)</h3>
+                    </div>
+                    <p class="section-hint">Для каждого свойства — revealed версия текста</p>
+                    <div id="abilities-o5-editor"></div>
+                </div>
+
+                <div class="admin-section o5-section">
+                    <div class="section-header-row">
+                        <h3>Инциденты (O5)</h3>
+                    </div>
+                    <p class="section-hint">Для каждого инцидента — revealed версия текста</p>
+                    <div id="incidents-o5-editor"></div>
                 </div>
             </div>
 
-            <div class="admin-section">
-                <h2>Инциденты</h2>
-                <div id="incidents-editor"></div>
-                <button id="btn-add-incident" class="btn-add">+ Добавить инцидент</button>
+            <!-- TAB: Photos -->
+            <div class="tab-panel" id="panel-photos">
+                <div class="panel-header">
+                    <h2>Визуальные материалы</h2>
+                    <p class="panel-desc">Фотографии объекта. Поддерживаются прямые ссылки на изображения.</p>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Фотографии</h3>
+                        <button id="btn-add-photo" class="btn-add">+ Добавить фото</button>
+                    </div>
+                    <div id="photos-editor" class="photos-grid"></div>
+                </div>
             </div>
 
-            <div class="admin-section">
-                <h2>Примечания персонала</h2>
-                <div id="notes-editor"></div>
-                <button id="btn-add-note" class="btn-add">+ Добавить примечание</button>
+            <!-- TAB: Settings -->
+            <div class="tab-panel" id="panel-settings">
+                <div class="panel-header">
+                    <h2>Настройки</h2>
+                    <p class="panel-desc">Токен GitHub для сохранения и конфигурация.</p>
+                </div>
+
+                <div class="admin-section">
+                    <h3>GitHub Token</h3>
+                    <p class="section-hint">Персональный токен для push в репозиторий. Сохраняется только в вашем браузере.</p>
+                    <input type="password" id="github-token" class="full-input" placeholder="ghp_...">
+                    <button id="btn-show-token" class="btn-small" style="margin-top:8px;">Показать</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>O5 Код доступа</h3>
+                    <p class="section-hint">Код, который пользователи вводят на сайте для раскрытия данных</p>
+                    <input type="text" id="edit-o5-code" class="full-input" value="TENTY_ULTIMATE_ACCESS">
+                </div>
+
+                <div class="admin-section">
+                    <h3>Быстрые действия</h3>
+                    <div class="actions-row">
+                        <button id="btn-export" class="btn-action">Экспорт JSON</button>
+                        <button id="btn-import" class="btn-action">Импорт JSON</button>
+                        <button id="btn-reset" class="btn-action btn-action-danger">Сброс</button>
+                    </div>
+                    <input type="file" id="import-file" accept=".json" style="display:none;">
+                </div>
             </div>
         </main>
     </div>

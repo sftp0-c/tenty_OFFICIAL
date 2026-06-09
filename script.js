@@ -75,7 +75,7 @@
         initAmbientSound();
         initTypingSound();
         initHoverSounds();
-        initHeartbeat();
+        initTerminalClock();
     }
 
     // ========================
@@ -454,24 +454,17 @@
     }
 
     // ========================
-    // HEARTBEAT MONITOR (added to description section)
+    // TERMINAL CLOCK
     // ========================
-    function initHeartbeat() {
-        const descSection = document.getElementById('sec-description');
-        if (!descSection) return;
-        const container = document.createElement('div');
-        container.className = 'heartbeat-container';
-        container.innerHTML = `
-            <div class="heartbeat-label">МОНИТОРИНГ ОБЪЕКТА — ПУЛЬС</div>
-            <div class="heartbeat-line">
-                <svg class="heartbeat-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
-                    <polyline fill="none" stroke="#0f0" stroke-width="1.5"
-                        points="0,20 30,20 35,20 40,5 45,35 50,15 55,25 60,20 100,20 130,20 135,20 140,5 145,35 150,15 155,25 160,20 200,20 230,20 235,20 240,5 245,35 250,15 255,25 260,20 300,20 330,20 335,20 340,5 345,35 350,15 355,25 360,20 400,20"/>
-                </svg>
-            </div>
-            <div class="heartbeat-value">34 BPM — АНОМАЛЬНО НИЗКИЙ</div>
-        `;
-        descSection.appendChild(container);
+    function initTerminalClock() {
+        const el = document.getElementById('terminal-time');
+        if (!el) return;
+        function update() {
+            const now = new Date();
+            el.textContent = now.toTimeString().slice(0, 8);
+        }
+        update();
+        setInterval(update, 1000);
     }
 
     // ========================

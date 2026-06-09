@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCP Foundation — Досье SCP-4228-RU</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -14,11 +14,18 @@
     <!-- COVER -->
     <div id="cover-screen">
         <div class="desk-surface"></div>
-        <div class="desk-lamp"></div>
+        <div class="desk-lamp-fixture"></div>
+        <div class="desk-lamp-light"></div>
         <div class="dust-particles"></div>
         <div class="desk-items">
             <div class="desk-pen"></div>
-            <div class="desk-paperclip"></div>
+            <div class="desk-pen-2"></div>
+            <div class="desk-paperclip clip-1"></div>
+            <div class="desk-paperclip clip-2"></div>
+            <div class="desk-coffee-mug"></div>
+            <div class="desk-glasses"></div>
+            <div class="desk-badge"></div>
+            <div class="desk-post-it"></div>
         </div>
         <div class="folder" id="folder">
             <div class="folder-tab">SCP-4228-RU</div>
@@ -26,9 +33,8 @@
             <div class="folder-stamp-2">КЕТЕР</div>
             <div class="folder-barcode"></div>
             <div class="folder-classification">УРОВЕНЬ ДОПУСКА: 4/4228</div>
-            <div class="folder-logo">
-                <div class="folder-logo-circle">SCP</div>
-            </div>
+            <div class="folder-logo"><div class="folder-logo-circle">SCP</div></div>
+            <div class="folder-serial">SER. №: 4228-7721-RU</div>
             <div class="folder-wear"></div>
             <div class="folder-instruction">Нажмите чтобы открыть досье</div>
         </div>
@@ -39,41 +45,88 @@
         <div class="desk-bg"></div>
         <div class="lamp-light"></div>
         <div class="dust-particles"></div>
+        <!-- Desk decorations around document -->
+        <div class="desk-side-items">
+            <div class="side-pen"></div>
+            <div class="side-clip-1"></div>
+            <div class="side-clip-2"></div>
+            <div class="side-eraser"></div>
+            <div class="side-stamp-pad"></div>
+            <div class="side-usb"></div>
+            <div class="side-post-it-stack"></div>
+        </div>
+
+        <!-- Terminal monitor (ambient detail) -->
+        <div class="terminal-widget">
+            <div class="terminal-header">SITE-17 MONITORING</div>
+            <div class="terminal-body">
+                <div class="terminal-line"><span class="t-green">STATUS:</span> CONTAINED</div>
+                <div class="terminal-line"><span class="t-yellow">THREAT:</span> BLACK</div>
+                <div class="terminal-line"><span class="t-red">ALERT:</span> NONE</div>
+                <div class="terminal-line t-dim">UPD: <span id="terminal-time"></span></div>
+            </div>
+        </div>
 
         <div class="document">
-            <!-- Page header -->
+            <!-- Watermark -->
+            <div class="watermark">SCP</div>
+
+            <!-- Paper details -->
+            <div class="paper-fold top-right"></div>
+            <div class="paper-fold bottom-left"></div>
+            <div class="staple staple-1"></div>
+            <div class="staple staple-2"></div>
+            <div class="coffee-stain"></div>
+            <div class="burn-hole burn-1"></div>
+            <div class="burn-hole burn-2"></div>
+            <div class="burn-hole burn-3"></div>
+            <div class="fingerprint"></div>
+            <div class="red-margin-line"></div>
+
+            <!-- Pinned note -->
+            <div class="pinned-note">
+                <div class="pin"></div>
+                <span>НЕ ПЕРЕДАВАТЬ В АРХИВ</span>
+            </div>
+
+            <!-- Approve stamp -->
+            <div class="approve-stamp">
+                <div class="approve-text">УТВЕРЖДАЮ</div>
+                <div class="approve-signature">~ неразборчиво ~</div>
+                <div class="approve-date">14.03.2026</div>
+            </div>
+
+            <!-- Big stamps -->
+            <div class="big-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+            <div class="big-stamp-2">КЕТЕР</div>
+
+            <!-- Scotch tape patches -->
+            <div class="scotch-tape tape-1"></div>
+            <div class="scotch-tape tape-2"></div>
+            <div class="scotch-tape tape-3"></div>
+
+            <!-- DOC HEADER -->
             <div class="doc-header">
                 <div class="doc-header-left">
                     <div class="scp-emblem">SCP</div>
-                    <span class="doc-header-text">FOUNDATION</span>
+                    <div class="doc-header-info">
+                        <span class="doc-header-text">SECURE CONTAIN PROTECT</span>
+                        <span class="doc-header-sub">Западно-Сибирское отделение</span>
+                    </div>
                 </div>
                 <div class="doc-header-right">
                     <span class="doc-class">СЕКРЕТНО</span>
+                    <span class="doc-copy">КОПИЯ №3</span>
                     <span class="doc-date">14.03.2026</span>
                 </div>
                 <div class="doc-header-line"></div>
             </div>
 
-            <!-- Big red stamp -->
-            <div class="big-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-            <div class="big-stamp-2">КЕТЕР</div>
-
-            <!-- Staple holes -->
-            <div class="staple staple-1"></div>
-            <div class="staple staple-2"></div>
-
-            <!-- Coffee stain -->
-            <div class="coffee-stain"></div>
-            <!-- Burn mark -->
-            <div class="burn-mark"></div>
-
             <!-- SECTION: Object number -->
             <section class="doc-section" id="sec-header">
                 <h1 class="doc-title">Объект №: <span id="obj-number"></span></h1>
                 <p class="doc-subtitle">Кодовое имя: "<span id="obj-codename"></span>"</p>
-                <div class="margin-note" data-position="header" style="top: 10px; right: -30px;">
-                    <span class="note-arrow">←</span>
-                </div>
+                <div class="hand-circle" style="top:-5px;left:60px;width:180px;height:40px;"></div>
             </section>
 
             <!-- SECTION: Class -->
@@ -83,43 +136,68 @@
                     <span class="class-name" id="obj-class"></span>
                     <span class="class-note" id="obj-class-note"></span>
                 </div>
-                <div class="underline-hand"></div>
+                <div class="hand-underline" style="width:120px;margin-top:8px;"></div>
+                <div class="hand-arrow" style="top:5px;right:20px;">!</div>
             </section>
 
             <!-- SECTION: Containment -->
             <section class="doc-section" id="sec-containment">
                 <h2 class="section-title">Особые условия содержания</h2>
                 <div class="doc-text" id="obj-containment"></div>
-                <div class="margin-note margin-note-red" style="top: 20px; right: -20px;">ОПАСЕН!!!</div>
+                <div class="margin-note margin-note-red" style="top:15px;right:-35px;transform:rotate(-2deg);">ОПАСЕН!!!</div>
+                <div class="page-footer">Стр. 1/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Discovery -->
             <section class="doc-section" id="sec-discovery">
                 <h2 class="section-title">История обнаружения</h2>
-                <div class="location-tag">
-                    <span class="tag-pin">📌</span> ТКПСТ, г. Тюмень — 14.03.2026
-                </div>
+                <div class="location-tag"><span class="tag-pin">📌</span> ТКПСТ, г. Тюмень — 14.03.2026</div>
                 <div class="doc-text" id="obj-discovery"></div>
-                <div class="margin-note margin-note-blue" style="top: 180px; right: -20px;">← парта в музей попала</div>
+                <div class="margin-note margin-note-blue" style="top:200px;right:-35px;transform:rotate(-1deg);">← парта в музей</div>
+                <div class="margin-note margin-note-red" style="top:350px;right:-35px;transform:rotate(1deg);">12 СЛОНОВ?!</div>
+                <div class="page-footer">Стр. 2/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Description -->
             <section class="doc-section" id="sec-description">
                 <h2 class="section-title">Описание</h2>
                 <div class="doc-text" id="obj-description"></div>
-                <div class="margin-note margin-note-red" style="top: 5px; right: -20px;">НЕ ПРИБЛИЖАТЬСЯ</div>
+                <div class="margin-note margin-note-red" style="top:5px;right:-35px;">НЕ ПРИБЛИЖАТЬСЯ</div>
+                <!-- Heartbeat monitor -->
+                <div class="heartbeat-container">
+                    <div class="hb-label">МОНИТОРИНГ ОБЪЕКТА — ПУЛЬС</div>
+                    <div class="hb-line">
+                        <svg class="hb-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
+                            <polyline fill="none" stroke="#0f0" stroke-width="1.5" points="0,20 30,20 35,20 40,5 45,35 50,15 55,25 60,20 100,20 130,20 135,20 140,5 145,35 150,15 155,25 160,20 200,20 230,20 235,20 240,5 245,35 250,15 255,25 260,20 300,20 330,20 335,20 340,5 345,35 350,15 355,25 360,20 400,20"/>
+                        </svg>
+                    </div>
+                    <div class="hb-data">
+                        <span>34 BPM</span>
+                        <span class="hb-warn">АНОМАЛЬНО НИЗКИЙ</span>
+                    </div>
+                </div>
+                <!-- Radiation bar -->
+                <div class="radiation-bar">
+                    <div class="rad-label">☢ УРОВЕНЬ РАДИАЦИИ КАМЕРЫ</div>
+                    <div class="rad-track"><div class="rad-fill"></div></div>
+                    <div class="rad-value">47,000 Бк/кг — КРИТИЧЕСКИЙ</div>
+                </div>
+                <div class="page-footer">Стр. 3/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
-            <!-- Photos as polaroids -->
+            <!-- Photos -->
             <section class="doc-section" id="sec-photos">
                 <h2 class="section-title">Визуальные материалы</h2>
                 <div class="polaroid-grid" id="photo-grid"></div>
+                <div class="page-footer">Стр. 4/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Abilities -->
             <section class="doc-section" id="sec-abilities">
                 <h2 class="section-title">Аномальные свойства</h2>
                 <div id="abilities-list"></div>
+                <div class="margin-note margin-note-red" style="top:120px;right:-35px;transform:rotate(-3deg);">серьёзно??</div>
+                <div class="page-footer">Стр. 5-6/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Phobia -->
@@ -127,28 +205,34 @@
                 <h2 class="section-title">Фобии и слабости</h2>
                 <div class="classified-folder" id="phobia-classified">
                     <div class="classified-tape"></div>
+                    <div class="classified-icon">🔒</div>
                     <div class="classified-label">ЗАСЕКРЕЧЕНО — УРОВЕНЬ O5</div>
+                    <div class="classified-sub">Для получения доступа введите код в терминале ниже</div>
                     <div class="classified-tape bottom"></div>
                 </div>
                 <div class="revealed-section hidden" id="phobia-revealed">
                     <div class="doc-text" id="phobia-text"></div>
                     <div class="video-slot" id="phobia-video"></div>
                 </div>
+                <div class="page-footer">Стр. 7/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Incidents -->
             <section class="doc-section" id="sec-incidents">
                 <h2 class="section-title">Зарегистрированные инциденты</h2>
                 <div id="incidents-list"></div>
+                <div class="margin-note margin-note-red" style="top:400px;right:-35px;transform:rotate(2deg);">кто разрешил?!</div>
+                <div class="page-footer">Стр. 8-10/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
             <!-- SECTION: Notes -->
             <section class="doc-section" id="sec-notes">
                 <h2 class="section-title">Примечания персонала</h2>
                 <div id="notes-list"></div>
+                <div class="page-footer">Стр. 11/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
-            <!-- O5 Access sticky note -->
+            <!-- O5 Access -->
             <section class="doc-section" id="sec-o5">
                 <div class="sticky-note" id="o5-sticky">
                     <div class="sticky-tape"></div>
@@ -157,18 +241,31 @@
                     <input type="text" id="o5-input" class="sticky-input" placeholder="введите код..." autocomplete="off" spellcheck="false">
                     <p class="sticky-status" id="o5-status"></p>
                 </div>
+                <div class="page-footer">Стр. 12/12 | SCP-4228-RU | КОНЕЦ ДОКУМЕНТА</div>
             </section>
 
-            <!-- Paper edge effects -->
-            <div class="paper-fold top-right"></div>
-            <div class="paper-fold bottom-left"></div>
+            <!-- Torn paper piece -->
+            <div class="torn-paper">
+                <div class="torn-tape"></div>
+                <p class="torn-text">Приложение 4228-E: Если объект попросит "поговорить" — ОТКАЗАТЬ. Последний раз когда мы согласились, д-р Ковалёв неделю выполнял его приказы.</p>
+            </div>
+        </div>
+
+        <!-- Second terminal (right side) -->
+        <div class="terminal-widget terminal-right">
+            <div class="terminal-header">CAMERA FEED #4228</div>
+            <div class="terminal-body">
+                <div class="terminal-line t-dim">OBJECT: <span class="t-green">INACTIVE</span></div>
+                <div class="terminal-line t-dim">MOVEMENT: 0.0%</div>
+                <div class="terminal-line t-dim">TEMP: 39.2°C</div>
+                <div class="terminal-line"><span class="t-red blink-slow">● REC</span></div>
+            </div>
         </div>
     </div>
 
-    <!-- Screamer overlay -->
+    <!-- Screamer -->
     <div id="screamer" class="screamer hidden"></div>
-
-    <!-- Lamp flicker dark overlay -->
+    <!-- Blackout -->
     <div id="blackout" class="blackout hidden"></div>
 
     <script src="script.js"></script>

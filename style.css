@@ -398,17 +398,6 @@ body {
     pointer-events: none;
 }
 
-/* Burn mark */
-.burn-mark {
-    position: absolute;
-    bottom: 150px;
-    left: 40px;
-    width: 30px;
-    height: 20px;
-    background: radial-gradient(ellipse, rgba(80,50,20,0.1) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-}
 
 /* ====================== DOC HEADER ====================== */
 .doc-header {
@@ -1063,49 +1052,710 @@ body.o5-access .section-title {
     border-bottom-color: var(--red);
 }
 
+/* ====================== WATERMARK ====================== */
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-family: var(--font-stamp);
+    font-size: 180px;
+    color: rgba(0, 0, 0, 0.02);
+    letter-spacing: 20px;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ====================== BURN HOLES ====================== */
+.burn-hole {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.burn-hole.burn-1 {
+    top: 300px;
+    right: 40px;
+    width: 25px;
+    height: 20px;
+    background: radial-gradient(ellipse, var(--desk) 40%, rgba(80, 50, 20, 0.6) 60%, rgba(60, 30, 10, 0.3) 80%, transparent 100%);
+    border-radius: 45% 55% 50% 50%;
+}
+
+.burn-hole.burn-2 {
+    bottom: 500px;
+    left: 35px;
+    width: 18px;
+    height: 15px;
+    background: radial-gradient(ellipse, var(--desk) 35%, rgba(80, 50, 20, 0.5) 60%, transparent 100%);
+    border-radius: 50% 45% 55% 50%;
+}
+
+.burn-hole.burn-3 {
+    top: 600px;
+    right: 90px;
+    width: 12px;
+    height: 10px;
+    background: radial-gradient(ellipse, var(--desk) 30%, rgba(80, 50, 20, 0.4) 70%, transparent 100%);
+    border-radius: 50%;
+}
+
+/* ====================== FINGERPRINT ====================== */
+.fingerprint {
+    position: absolute;
+    bottom: 200px;
+    right: 60px;
+    width: 40px;
+    height: 55px;
+    border-radius: 40% 40% 45% 45%;
+    background:
+        repeating-radial-gradient(ellipse at 50% 50%, transparent 0px, transparent 2px, rgba(139, 50, 30, 0.04) 2px, rgba(139, 50, 30, 0.04) 3px);
+    opacity: 0.7;
+    transform: rotate(15deg);
+    pointer-events: none;
+}
+
+/* ====================== RED MARGIN LINE ====================== */
+.red-margin-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 65px;
+    width: 1px;
+    background: rgba(220, 50, 50, 0.12);
+    pointer-events: none;
+}
+
+/* ====================== PINNED NOTE ====================== */
+.pinned-note {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+    background: #fff9c4;
+    padding: 6px 14px 6px 22px;
+    font-family: var(--font-hand);
+    font-size: 14px;
+    color: var(--red);
+    transform: rotate(-2deg);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+.pinned-note .pin {
+    position: absolute;
+    top: -4px;
+    left: 8px;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 40% 40%, #e74c3c, #8b0000);
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* ====================== APPROVE STAMP ====================== */
+.approve-stamp {
+    position: absolute;
+    top: 50px;
+    right: 70px;
+    text-align: center;
+    transform: rotate(3deg);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.approve-text {
+    font-family: var(--font-stamp);
+    font-size: 14px;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    padding: 3px 12px;
+    letter-spacing: 3px;
+}
+
+.approve-signature {
+    font-family: var(--font-hand);
+    font-size: 16px;
+    color: var(--blue);
+    margin-top: 4px;
+    opacity: 0.5;
+}
+
+.approve-date {
+    font-size: 10px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+}
+
+/* ====================== SCOTCH TAPE ====================== */
+.scotch-tape {
+    position: absolute;
+    width: 60px;
+    height: 22px;
+    background: rgba(255, 230, 150, 0.5);
+    border: 1px solid rgba(200, 180, 100, 0.25);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.scotch-tape.tape-1 {
+    top: 250px;
+    left: 30px;
+    transform: rotate(5deg);
+}
+
+.scotch-tape.tape-2 {
+    top: 750px;
+    right: 25px;
+    transform: rotate(-3deg);
+}
+
+.scotch-tape.tape-3 {
+    bottom: 350px;
+    left: 50px;
+    transform: rotate(2deg);
+    width: 50px;
+}
+
+/* ====================== DOC HEADER EXTRA ====================== */
+.doc-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.doc-header-sub {
+    font-size: 10px;
+    color: var(--ink-dim);
+    letter-spacing: 1px;
+}
+
+.doc-copy {
+    font-size: 11px;
+    color: var(--ink-dim);
+}
+
+.folder-serial {
+    font-size: 10px;
+    color: var(--ink-dim);
+    letter-spacing: 1px;
+    opacity: 0.6;
+}
+
+/* ====================== HAND-DRAWN ELEMENTS ====================== */
+.hand-circle {
+    position: absolute;
+    border: 2px solid var(--red);
+    border-radius: 50%;
+    opacity: 0.4;
+    pointer-events: none;
+    transform: rotate(-2deg);
+}
+
+.hand-underline {
+    height: 2px;
+    background: var(--red);
+    opacity: 0.5;
+    border-radius: 1px;
+    transform: rotate(-0.5deg);
+}
+
+.hand-arrow {
+    position: absolute;
+    font-family: var(--font-hand);
+    font-size: 22px;
+    color: var(--red);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ====================== PAGE FOOTER ====================== */
+.page-footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    font-size: 9px;
+    color: var(--ink-dim);
+    letter-spacing: 1px;
+    text-align: center;
+    opacity: 0.5;
+}
+
 /* ====================== HEARTBEAT MONITOR ====================== */
 .heartbeat-container {
     margin-top: 20px;
     padding: 15px;
-    background: #111;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
     border-radius: 3px;
     position: relative;
     overflow: hidden;
 }
 
-.heartbeat-label {
-    font-size: 10px;
-    color: #0f0;
-    font-family: var(--font-type);
-    margin-bottom: 5px;
+.heartbeat-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.01) 2px, rgba(0, 255, 0, 0.01) 3px);
+    pointer-events: none;
 }
 
-.heartbeat-line {
+.hb-label {
+    font-size: 10px;
+    color: #0a0;
+    font-family: 'Share Tech Mono', var(--font-type);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.hb-line {
     height: 40px;
     position: relative;
     overflow: hidden;
 }
 
-.heartbeat-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
+.hb-svg {
+    width: 100%;
     height: 100%;
-    animation: heartbeat-scroll 3s linear infinite;
+    animation: hb-pulse 0.1s ease infinite;
 }
 
-@keyframes heartbeat-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+@keyframes hb-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
 }
 
-.heartbeat-value {
+.hb-data {
+    display: flex;
+    justify-content: space-between;
     font-size: 11px;
     color: #0f0;
+    font-family: 'Share Tech Mono', var(--font-type);
+    margin-top: 5px;
+}
+
+.hb-warn {
+    color: #f00;
+    animation: blink-warn 1.5s infinite;
+}
+
+@keyframes blink-warn {
+    0%, 70%, 100% { opacity: 1; }
+    35% { opacity: 0.3; }
+}
+
+/* ====================== RADIATION BAR ====================== */
+.radiation-bar {
+    margin-top: 15px;
+    padding: 12px 15px;
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 3px;
+}
+
+.rad-label {
+    font-size: 10px;
+    color: #ff8800;
+    font-family: 'Share Tech Mono', var(--font-type);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.rad-track {
+    height: 8px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.rad-fill {
+    height: 100%;
+    width: 78%;
+    background: linear-gradient(90deg, #2d7d2d, #8b8b00, #cc6600, #cc0000);
+    border-radius: 4px;
+    animation: rad-glow 2s ease infinite;
+}
+
+@keyframes rad-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(204, 0, 0, 0.5); }
+    50% { opacity: 0.85; box-shadow: 0 0 10px rgba(204, 0, 0, 0.8); }
+}
+
+.rad-value {
+    font-size: 10px;
+    color: #f44;
+    font-family: 'Share Tech Mono', var(--font-type);
+    margin-top: 5px;
     text-align: right;
-    margin-top: 3px;
+}
+
+/* ====================== CLASSIFIED EXTRA ====================== */
+.classified-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.classified-sub {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 8px;
+}
+
+/* ====================== TERMINAL WIDGET ====================== */
+.terminal-widget {
+    position: fixed;
+    top: 30px;
+    left: 20px;
+    width: 200px;
+    background: #0a0a0a;
+    border: 1px solid #1a3a1a;
+    border-radius: 3px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    overflow: hidden;
+    z-index: 4;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.05), 2px 3px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0.85;
+}
+
+.terminal-widget.terminal-right {
+    left: auto;
+    right: 20px;
+    top: 200px;
+}
+
+.terminal-header {
+    background: #0d1a0d;
+    padding: 5px 10px;
+    color: #0a0;
+    border-bottom: 1px solid #1a3a1a;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.terminal-body {
+    padding: 8px 10px;
+}
+
+.terminal-line {
+    margin-bottom: 4px;
+    color: #0c0;
+}
+
+.t-green { color: #0f0; }
+.t-yellow { color: #ff0; }
+.t-red { color: #f44; }
+.t-dim { color: #060; opacity: 0.7; }
+
+.blink-slow {
+    animation: blink-slow-anim 2s infinite;
+}
+
+@keyframes blink-slow-anim {
+    0%, 60%, 100% { opacity: 1; }
+    30% { opacity: 0; }
+}
+
+/* ====================== TORN PAPER ====================== */
+.torn-paper {
+    margin-top: 40px;
+    padding: 20px 25px;
+    background: var(--paper-aged);
+    border: none;
+    position: relative;
+    clip-path: polygon(0% 5%, 3% 0%, 8% 4%, 15% 1%, 22% 3%, 30% 0%, 38% 2%, 45% 0%, 52% 3%, 60% 1%, 68% 4%, 75% 0%, 82% 2%, 88% 0%, 93% 3%, 97% 1%, 100% 4%, 100% 95%, 97% 100%, 92% 97%, 85% 100%, 78% 98%, 70% 100%, 62% 97%, 55% 100%, 48% 98%, 40% 100%, 32% 97%, 25% 100%, 18% 98%, 10% 100%, 5% 97%, 0% 100%);
+    box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.torn-tape {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 50px;
+    height: 18px;
+    background: rgba(255, 230, 150, 0.6);
+    border: 1px solid rgba(200, 180, 100, 0.3);
+    transform: rotate(3deg);
+}
+
+.torn-text {
     font-family: var(--font-type);
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* ====================== DESK SIDE ITEMS ====================== */
+.desk-side-items {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.side-pen {
+    position: fixed;
+    bottom: 80px;
+    right: 40px;
+    width: 140px;
+    height: 7px;
+    background: linear-gradient(90deg, #222, #444, #222);
+    border-radius: 2px;
+    transform: rotate(-30deg);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.side-pen::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 1px;
+    width: 10px;
+    height: 5px;
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+    border-radius: 2px 0 0 2px;
+}
+
+.side-clip-1 {
+    position: fixed;
+    top: 200px;
+    left: 30px;
+    width: 20px;
+    height: 40px;
+    border: 2px solid #999;
+    border-radius: 10px;
+    transform: rotate(10deg);
+}
+
+.side-clip-2 {
+    position: fixed;
+    bottom: 150px;
+    left: 50px;
+    width: 18px;
+    height: 35px;
+    border: 2px solid #aaa;
+    border-radius: 9px;
+    transform: rotate(-15deg);
+}
+
+.side-eraser {
+    position: fixed;
+    bottom: 40px;
+    left: 100px;
+    width: 35px;
+    height: 18px;
+    background: linear-gradient(180deg, #ffc0cb, #ff69b4);
+    border-radius: 2px;
+    transform: rotate(8deg);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.side-stamp-pad {
+    position: fixed;
+    top: 300px;
+    right: 30px;
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(180deg, #333, #1a1a1a);
+    border: 1px solid #555;
+    border-radius: 2px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.side-stamp-pad::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: #1a0000;
+    border-radius: 1px;
+}
+
+.side-usb {
+    position: fixed;
+    top: 400px;
+    left: 25px;
+    width: 30px;
+    height: 12px;
+    background: linear-gradient(180deg, #ddd, #bbb);
+    border-radius: 2px;
+    transform: rotate(-5deg);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.side-usb::before {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 2px;
+    width: 8px;
+    height: 8px;
+    background: #999;
+    border-radius: 1px;
+}
+
+.side-post-it-stack {
+    position: fixed;
+    bottom: 120px;
+    right: 60px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #fff9c4, #fff59d);
+    box-shadow:
+        2px 2px 0 #fff176,
+        4px 4px 0 #ffee58,
+        2px 3px 8px rgba(0, 0, 0, 0.2);
+    transform: rotate(5deg);
+}
+
+/* ====================== DESK COVER EXTRAS ====================== */
+.desk-lamp-fixture {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 30px;
+    background: #555;
+    z-index: 10;
+}
+
+.desk-lamp-light {
+    position: fixed;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 25px;
+    background: #444;
+    border-radius: 0 0 40px 40px;
+    z-index: 10;
+    box-shadow: 0 5px 30px rgba(255, 230, 150, 0.3);
+}
+
+.desk-pen-2 {
+    position: absolute;
+    top: 200px;
+    right: 120px;
+    width: 120px;
+    height: 6px;
+    background: linear-gradient(90deg, #1a3d6e, #2a5da8, #1a3d6e);
+    transform: rotate(40deg);
+    border-radius: 2px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.desk-paperclip.clip-2 {
+    top: auto;
+    bottom: 180px;
+    left: auto;
+    right: 200px;
+    transform: rotate(-20deg);
+}
+
+.desk-coffee-mug {
+    position: absolute;
+    bottom: 100px;
+    left: 80px;
+    width: 45px;
+    height: 45px;
+    border: 3px solid #666;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #2c1810, #1a0a05);
+    box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.desk-coffee-mug::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 10px;
+    width: 12px;
+    height: 20px;
+    border: 2px solid #666;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+}
+
+.desk-glasses {
+    position: absolute;
+    top: 80px;
+    right: 60px;
+    width: 60px;
+    height: 20px;
+    border-bottom: 2px solid #888;
+    position: absolute;
+}
+
+.desk-glasses::before, .desk-glasses::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #888;
+    border-radius: 50%;
+}
+
+.desk-glasses::before { left: 2px; }
+.desk-glasses::after { right: 2px; }
+
+.desk-badge {
+    position: absolute;
+    bottom: 200px;
+    right: 50px;
+    width: 40px;
+    height: 55px;
+    background: linear-gradient(180deg, #eee, #ddd);
+    border-radius: 3px;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+    transform: rotate(8deg);
+}
+
+.desk-badge::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 25px;
+    background: #ccc;
+    border-radius: 50%;
+}
+
+.desk-badge::after {
+    content: 'SCP';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 7px;
+    font-family: var(--font-stamp);
+    color: #666;
+    letter-spacing: 1px;
+}
+
+.desk-post-it {
+    position: absolute;
+    top: 150px;
+    left: 120px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+    transform: rotate(-6deg);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.desk-post-it::after {
+    content: '???';
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    font-family: var(--font-hand);
+    font-size: 14px;
+    color: #333;
 }
 
 /* ====================== RESPONSIVE ====================== */
@@ -1118,4 +1768,12 @@ body.o5-access .section-title {
     .polaroid { width: 200px; }
     .margin-note { display: none; }
     .sticky-note { width: 260px; }
+    .terminal-widget { display: none; }
+    .desk-side-items { display: none; }
+    .pinned-note { display: none; }
+    .approve-stamp { display: none; }
+    .scotch-tape { display: none; }
+    .hand-circle { display: none; }
+    .hand-arrow { display: none; }
+    .torn-paper { clip-path: none; }
 }
