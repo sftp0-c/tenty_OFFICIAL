@@ -3,7 +3,7 @@
 
     const CREDENTIALS = {
         login: 'micasimka',
-        passHash: '6d616b6b736f73736f736970697a6f73' // hex of makksossosipisos
+        passHash: '6d616b6b736f73736f73697069736f73' // hex of makksossosipisos
     };
 
     const REPO = 'sftp0-c/tenty_OFFICIAL';
