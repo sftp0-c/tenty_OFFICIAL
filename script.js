@@ -320,30 +320,6 @@
         // Noise canvas opacity — subtle
         const noise = document.getElementById('noise-canvas');
         noise.style.opacity = breachLevel > 0.6 ? ((breachLevel - 0.6) * 0.15) : 0;
-
-        // Cracks appear gently at high levels
-        const cracks = document.getElementById('crack-overlay');
-        if (breachLevel > 0.8) {
-            cracks.classList.remove('hidden');
-            const lines = cracks.querySelectorAll('.crack-line');
-            const numActive = Math.floor((breachLevel - 0.8) / 0.04);
-            lines.forEach((l, i) => { if (i < numActive) l.classList.add('active'); });
-        } else {
-            cracks.classList.add('hidden');
-        }
-
-        // Breach banner
-        const overlay = document.getElementById('breach-overlay');
-        const warnings = document.getElementById('breach-warnings');
-        if (breachLevel > 0.92 && !o5Granted) {
-            overlay.classList.remove('hidden');
-            if (!warnings.children.length) {
-                warnings.innerHTML = '<div class="breach-alert">⚠ CONTAINMENT BREACH ⚠</div>';
-            }
-        } else {
-            overlay.classList.add('hidden');
-            warnings.innerHTML = '';
-        }
     }
 
     // ========================
