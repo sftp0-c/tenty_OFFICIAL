@@ -6,6 +6,12 @@
     let o5Granted = false;
     let idleTimer = null;
     let screamerCooldown = false;
+    let audioCtx = null;
+
+    function getAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return audioCtx;
+    }
 
     // ========================
     // COVER / FOLDER
@@ -17,36 +23,39 @@
         const folder = document.getElementById('folder');
 
         playPaperSound();
-        folder.style.transform = 'scale(1.1) rotate(-2deg)';
+        folder.style.transform = 'scale(1.05) rotate(-1deg)';
         folder.style.opacity = '0';
-        folder.style.transition = 'all 0.6s ease';
+        folder.style.transition = 'all 0.8s ease';
 
         setTimeout(() => {
             cover.style.opacity = '0';
-            cover.style.transition = 'opacity 0.5s';
+            cover.style.transition = 'opacity 0.6s';
             setTimeout(() => {
                 cover.style.display = 'none';
                 document.getElementById('document-container').classList.remove('hidden');
                 initDocument();
-            }, 500);
-        }, 400);
+            }, 600);
+        }, 500);
     }
 
     function playPaperSound() {
         try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
+            const ctx = getAudio();
+            const dur = 0.4;
+            const buffer = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
             const data = buffer.getChannelData(0);
             for (let i = 0; i < data.length; i++) {
-                data[i] = (Math.random() - 0.5) * Math.exp(-i / (ctx.sampleRate * 0.05)) * 0.3;
+                const t = i / ctx.sampleRate;
+                data[i] = (Math.random() - 0.5) * Math.exp(-t / 0.08) * 0.4;
             }
             const source = ctx.createBufferSource();
             source.buffer = buffer;
             const filter = ctx.createBiquadFilter();
-            filter.type = 'highpass';
-            filter.frequency.value = 2000;
+            filter.type = 'bandpass';
+            filter.frequency.value = 3000;
+            filter.Q.value = 0.5;
             const gain = ctx.createGain();
-            gain.gain.value = 0.15;
+            gain.gain.value = 0.2;
             source.connect(filter);
             filter.connect(gain);
             gain.connect(ctx.destination);
@@ -63,6 +72,10 @@
         initO5Terminal();
         initScreamers();
         initLampFlicker();
+        initAmbientSound();
+        initTypingSound();
+        initHoverSounds();
+        initHeartbeat();
     }
 
     // ========================
@@ -74,7 +87,7 @@
             contentData = await resp.json();
             renderContent();
         } catch(e) {
-            document.querySelector('.document').innerHTML = '<p style="color:red;padding:40px;">Ошибка загрузки данных. Обновите страницу.</p>';
+            document.querySelector('.document').innerHTML = '<p style="color:red;padding:40px;font-family:monospace;">[ ОШИБКА ЗАГРУЗКИ БАЗЫ ДАННЫХ ]<br>Обновите страницу (Ctrl+Shift+R)</p>';
         }
     }
 
@@ -82,7 +95,7 @@
         const d = contentData;
 
         document.getElementById('obj-number').textContent = d.object_number;
-        document.getElementById('obj-codename').textContent = d.codename;
+        typewriterEffect(document.getElementById('obj-codename'), d.codename);
         document.getElementById('obj-class').textContent = d.class.toUpperCase();
         document.getElementById('obj-class-note').textContent = '(' + d.class_note + ')';
 
@@ -98,16 +111,63 @@
     }
 
     function formatText(text) {
-        return text
-            .replace(/████+/g, (match) => {
-                return `<span class="redacted"><span class="redacted-bar"></span><span class="redacted-text">${match}</span></span>`;
-            })
-            .replace(/██/g, (match) => {
-                return `<span class="redacted"><span class="redacted-bar"></span><span class="redacted-text">${match}</span></span>`;
-            })
-            .replace(/\n/g, '<br>');
+        let result = text;
+        // Replace long censored blocks
+        result = result.replace(/████████+/g, (m) =>
+            `<span class="redacted"><span class="redacted-bar"></span><span class="redacted-text">ЗАСЕКРЕЧЕНО</span></span>`
+        );
+        // Replace medium blocks
+        result = result.replace(/████/g,
+            `<span class="redacted"><span class="redacted-bar"></span><span class="redacted-text">УДАЛЕНО</span></span>`
+        );
+        // Replace short blocks
+        result = result.replace(/██/g,
+            `<span class="redacted"><span class="redacted-bar"></span><span class="redacted-text">--</span></span>`
+        );
+        result = result.replace(/\n/g, '<br>');
+        return result;
     }
 
+    function formatRevealed(text) {
+        return text.replace(/\n/g, '<br>');
+    }
+
+    // ========================
+    // TYPEWRITER
+    // ========================
+    function typewriterEffect(el, text) {
+        el.textContent = '';
+        let i = 0;
+        const interval = setInterval(() => {
+            if (i < text.length) {
+                el.textContent += text[i];
+                i++;
+                playKeyClick();
+            } else {
+                clearInterval(interval);
+            }
+        }, 80);
+    }
+
+    function playKeyClick() {
+        try {
+            const ctx = getAudio();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = 800 + Math.random() * 400;
+            gain.gain.value = 0.02;
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.02);
+        } catch(e) {}
+    }
+
+    // ========================
+    // RENDER FUNCTIONS
+    // ========================
     function renderPhotos(photos) {
         const grid = document.getElementById('photo-grid');
         grid.innerHTML = '';
@@ -126,12 +186,7 @@
                 ? '<div class="polaroid-tape"></div>'
                 : '<div class="polaroid-clip"></div>';
 
-            polaroid.innerHTML = `
-                ${tapeOrClip}
-                ${imageHtml}
-                <div class="polaroid-caption">${photo.caption}</div>
-            `;
-
+            polaroid.innerHTML = `${tapeOrClip}${imageHtml}<div class="polaroid-caption">${photo.caption}</div>`;
             polaroid.addEventListener('mouseenter', () => photoGlitch(polaroid));
             grid.appendChild(polaroid);
         });
@@ -144,10 +199,7 @@
             const item = document.createElement('div');
             item.className = 'ability-item';
             item.setAttribute('data-index', i);
-            item.innerHTML = `
-                <div class="ability-name">${i + 1}. ${a.name}</div>
-                <div class="ability-text">${formatText(a.text)}</div>
-            `;
+            item.innerHTML = `<div class="ability-name">${i + 1}. ${a.name}</div><div class="ability-text">${formatText(a.text)}</div>`;
             list.appendChild(item);
         });
     }
@@ -155,12 +207,11 @@
     function renderPhobia(text, videoUrl) {
         const el = document.getElementById('phobia-text');
         el.innerHTML = formatText(text);
-
         const videoSlot = document.getElementById('phobia-video');
         if (videoUrl) {
             videoSlot.innerHTML = `<iframe src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
         } else {
-            videoSlot.textContent = '[ВИДЕО — Инцидент 4228-Delta]';
+            videoSlot.textContent = '[ВИДЕО — Инцидент 4228-Delta: уничтожение аномальных мух]';
         }
     }
 
@@ -185,16 +236,13 @@
             const item = document.createElement('div');
             item.className = 'note-item' + (note.o5_only ? ' o5-note hidden' : '');
             if (note.o5_only) item.setAttribute('data-o5', 'true');
-            item.innerHTML = `
-                <div class="note-author">${note.author}</div>
-                <div class="note-text">"${note.text}"</div>
-            `;
+            item.innerHTML = `<div class="note-author">${note.author}:</div><div class="note-text">"${note.text}"</div>`;
             list.appendChild(item);
         });
     }
 
     // ========================
-    // GSAP SCROLL ANIMATIONS
+    // GSAP
     // ========================
     function initGSAP() {
         gsap.registerPlugin(ScrollTrigger);
@@ -203,15 +251,13 @@
                 trigger: section,
                 start: 'top 85%',
                 once: true,
-                onEnter: () => {
-                    section.classList.add('visible');
-                }
+                onEnter: () => section.classList.add('visible')
             });
         });
     }
 
     // ========================
-    // O5 TERMINAL
+    // O5 TERMINAL — FULL REVEAL
     // ========================
     function initO5Terminal() {
         const input = document.getElementById('o5-input');
@@ -220,20 +266,52 @@
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (input.value.trim() === O5_CODE) {
-                    status.textContent = '✓ ДОСТУП РАЗРЕШЁН';
+                    status.textContent = '✓ ДОСТУП ПОДТВЕРЖДЁН — УРОВЕНЬ O5';
                     status.className = 'sticky-status granted';
+                    playAccessGranted();
                     grantO5Access();
                 } else {
                     status.textContent = '✗ КОД НЕВЕРНЫЙ';
                     status.className = 'sticky-status denied';
+                    playAccessDenied();
                     shakeElement(document.getElementById('o5-sticky'));
-                    setTimeout(() => {
-                        status.textContent = '';
-                        status.className = 'sticky-status';
-                    }, 2000);
+                    setTimeout(() => { status.textContent = ''; status.className = 'sticky-status'; }, 3000);
                 }
             }
         });
+    }
+
+    function playAccessGranted() {
+        try {
+            const ctx = getAudio();
+            [600, 800, 1000].forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.frequency.value = freq;
+                gain.gain.value = 0.1;
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3 + i * 0.1);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime + i * 0.1);
+                osc.stop(ctx.currentTime + 0.3 + i * 0.1);
+            });
+        } catch(e) {}
+    }
+
+    function playAccessDenied() {
+        try {
+            const ctx = getAudio();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.value = 150;
+            gain.gain.value = 0.15;
+            gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
     }
 
     function grantO5Access() {
@@ -241,14 +319,16 @@
         o5Granted = true;
         document.body.classList.add('o5-access');
 
-        // Reveal phobia
-        document.getElementById('phobia-classified').classList.add('hidden');
-        document.getElementById('phobia-revealed').classList.remove('hidden');
+        // Reveal phobia section
+        const classified = document.getElementById('phobia-classified');
+        const revealed = document.getElementById('phobia-revealed');
+        if (classified) classified.classList.add('hidden');
+        if (revealed) revealed.classList.remove('hidden');
 
-        // Reveal O5 notes
+        // Reveal O5-only notes
         document.querySelectorAll('[data-o5]').forEach(el => el.classList.remove('hidden'));
 
-        // Replace text with revealed versions
+        // Replace ALL text fields with revealed versions
         if (contentData.containment_revealed) {
             document.getElementById('obj-containment').innerHTML = formatRevealed(contentData.containment_revealed);
         }
@@ -262,35 +342,136 @@
             document.getElementById('phobia-text').innerHTML = formatRevealed(contentData.phobia_revealed);
         }
 
-        // Replace abilities with revealed versions
-        const abilities = contentData.abilities;
+        // Replace abilities
         const abilityItems = document.querySelectorAll('.ability-item');
         abilityItems.forEach((item, i) => {
-            if (abilities[i] && abilities[i].text_revealed) {
-                item.querySelector('.ability-text').innerHTML = formatRevealed(abilities[i].text_revealed);
+            if (contentData.abilities[i] && contentData.abilities[i].text_revealed) {
+                item.querySelector('.ability-text').innerHTML = formatRevealed(contentData.abilities[i].text_revealed);
             }
         });
 
-        // Replace incidents with revealed versions
-        const incidents = contentData.incidents;
+        // Replace incidents
         const incidentItems = document.querySelectorAll('.incident-item');
         incidentItems.forEach((item, i) => {
-            if (incidents[i] && incidents[i].text_revealed) {
-                item.querySelector('.incident-text').innerHTML = formatRevealed(incidents[i].text_revealed);
+            if (contentData.incidents[i] && contentData.incidents[i].text_revealed) {
+                item.querySelector('.incident-text').innerHTML = formatRevealed(contentData.incidents[i].text_revealed);
             }
         });
 
-        // Flash effect
-        const doc = document.querySelector('.document');
-        doc.style.transition = 'box-shadow 0.5s';
-        doc.style.boxShadow = '0 0 30px rgba(255,0,0,0.3), 5px 5px 20px rgba(0,0,0,0.3)';
-        setTimeout(() => {
-            doc.style.boxShadow = '5px 5px 20px rgba(0,0,0,0.3)';
-        }, 2000);
+        // Visual flash
+        const lamp = document.querySelector('.lamp-light');
+        lamp.style.opacity = '0';
+        setTimeout(() => { lamp.style.opacity = '1'; }, 300);
+        setTimeout(() => { lamp.style.opacity = '0.5'; }, 500);
+        setTimeout(() => { lamp.style.opacity = '1'; }, 700);
     }
 
-    function formatRevealed(text) {
-        return text.replace(/\n/g, '<br>');
+    // ========================
+    // AMBIENT SOUND
+    // ========================
+    function initAmbientSound() {
+        document.addEventListener('click', function start() {
+            document.removeEventListener('click', start);
+            try {
+                const ctx = getAudio();
+                // Very quiet ventilation hum
+                const osc = ctx.createOscillator();
+                const filter = ctx.createBiquadFilter();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.value = 60;
+                filter.type = 'lowpass';
+                filter.frequency.value = 80;
+                gain.gain.value = 0.004;
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+
+                // Clock ticking
+                setInterval(() => {
+                    const tick = ctx.createOscillator();
+                    const tGain = ctx.createGain();
+                    tick.type = 'sine';
+                    tick.frequency.value = 2200;
+                    tGain.gain.value = 0.008;
+                    tGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.015);
+                    tick.connect(tGain);
+                    tGain.connect(ctx.destination);
+                    tick.start();
+                    tick.stop(ctx.currentTime + 0.015);
+                }, 1000);
+
+                // Distant footsteps (random)
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        const step = ctx.createOscillator();
+                        const sGain = ctx.createGain();
+                        step.type = 'sine';
+                        step.frequency.value = 100 + Math.random() * 50;
+                        sGain.gain.value = 0.006;
+                        sGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.08);
+                        step.connect(sGain);
+                        sGain.connect(ctx.destination);
+                        step.start();
+                        step.stop(ctx.currentTime + 0.08);
+                    }
+                }, 2000 + Math.random() * 3000);
+            } catch(e) {}
+        }, { once: true });
+    }
+
+    // ========================
+    // TYPING SOUND ON INPUT
+    // ========================
+    function initTypingSound() {
+        const input = document.getElementById('o5-input');
+        input.addEventListener('input', () => {
+            playKeyClick();
+        });
+    }
+
+    // ========================
+    // HOVER SOUNDS
+    // ========================
+    function initHoverSounds() {
+        document.querySelectorAll('.polaroid').forEach(p => {
+            p.addEventListener('mouseenter', () => {
+                try {
+                    const ctx = getAudio();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.frequency.value = 400;
+                    gain.gain.value = 0.015;
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.05);
+                } catch(e) {}
+            });
+        });
+    }
+
+    // ========================
+    // HEARTBEAT MONITOR (added to description section)
+    // ========================
+    function initHeartbeat() {
+        const descSection = document.getElementById('sec-description');
+        if (!descSection) return;
+        const container = document.createElement('div');
+        container.className = 'heartbeat-container';
+        container.innerHTML = `
+            <div class="heartbeat-label">МОНИТОРИНГ ОБЪЕКТА — ПУЛЬС</div>
+            <div class="heartbeat-line">
+                <svg class="heartbeat-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="#0f0" stroke-width="1.5"
+                        points="0,20 30,20 35,20 40,5 45,35 50,15 55,25 60,20 100,20 130,20 135,20 140,5 145,35 150,15 155,25 160,20 200,20 230,20 235,20 240,5 245,35 250,15 255,25 260,20 300,20 330,20 335,20 340,5 345,35 350,15 355,25 360,20 400,20"/>
+                </svg>
+            </div>
+            <div class="heartbeat-value">34 BPM — АНОМАЛЬНО НИЗКИЙ</div>
+        `;
+        descSection.appendChild(container);
     }
 
     // ========================
@@ -299,49 +480,47 @@
     function initScreamers() {
         initIdleScreamer();
         initScrollScreamer();
-        initPhotoScreamer();
     }
 
     function showScreamer() {
         if (screamerCooldown) return;
         screamerCooldown = true;
-
         const el = document.getElementById('screamer');
         el.innerHTML = '<div class="screamer-face"></div>';
         el.classList.remove('hidden');
         playScreamerSound();
-
-        setTimeout(() => {
-            el.classList.add('hidden');
-            el.innerHTML = '';
-        }, 500);
-
+        setTimeout(() => { el.classList.add('hidden'); el.innerHTML = ''; }, 500);
         setTimeout(() => { screamerCooldown = false; }, 60000);
     }
 
     function playScreamerSound() {
         try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const ctx = getAudio();
             const osc = ctx.createOscillator();
+            const osc2 = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.type = 'sawtooth';
-            osc.frequency.value = 200;
-            osc.frequency.linearRampToValueAtTime(2500, ctx.currentTime + 0.12);
-            gain.gain.value = 0.3;
+            osc2.type = 'square';
+            osc.frequency.value = 150;
+            osc.frequency.linearRampToValueAtTime(2500, ctx.currentTime + 0.1);
+            osc2.frequency.value = 80;
+            osc2.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.15);
+            gain.gain.value = 0.25;
             gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
             osc.connect(gain);
+            osc2.connect(gain);
             gain.connect(ctx.destination);
             osc.start();
+            osc2.start();
             osc.stop(ctx.currentTime + 0.4);
+            osc2.stop(ctx.currentTime + 0.4);
         } catch(e) {}
     }
 
     function initIdleScreamer() {
         function resetIdle() {
             clearTimeout(idleTimer);
-            idleTimer = setTimeout(() => {
-                lampBlackout();
-            }, 120000);
+            idleTimer = setTimeout(lampBlackout, 120000);
         }
         ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
             document.addEventListener(evt, resetIdle);
@@ -352,12 +531,11 @@
     function lampBlackout() {
         const blackout = document.getElementById('blackout');
         blackout.classList.remove('hidden');
-        blackout.style.opacity = '1';
-
+        blackout.classList.add('active');
         setTimeout(() => {
             showScreamer();
             setTimeout(() => {
-                blackout.style.opacity = '0';
+                blackout.classList.remove('active');
                 setTimeout(() => blackout.classList.add('hidden'), 2000);
             }, 600);
         }, 3000);
@@ -371,27 +549,20 @@
             const now = Date.now();
             const diff = Math.abs(window.scrollY - lastScrollY);
             const timeDiff = now - lastScrollTime;
-            if (timeDiff > 0 && timeDiff < 150 && diff > 900) {
-                if (Math.random() > 0.5) showScreamer();
+            if (timeDiff > 0 && timeDiff < 150 && diff > 800 && Math.random() > 0.5) {
+                showScreamer();
             }
             lastScrollY = window.scrollY;
             lastScrollTime = now;
         });
     }
 
-    function initPhotoScreamer() {
-        // handled in renderPhotos -> photoGlitch
-    }
-
     function photoGlitch(polaroid) {
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.12) {
             const img = polaroid.querySelector('.polaroid-image');
-            img.style.filter = 'invert(1) hue-rotate(180deg)';
+            img.style.filter = 'invert(1) hue-rotate(180deg) contrast(2)';
             img.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                img.style.filter = '';
-                img.style.transform = '';
-            }, 200);
+            setTimeout(() => { img.style.filter = ''; img.style.transform = ''; }, 180);
         }
     }
 
@@ -400,18 +571,18 @@
     // ========================
     function initLampFlicker() {
         setInterval(() => {
-            if (Math.random() > 0.85) {
+            if (Math.random() > 0.82) {
                 const lamp = document.querySelector('.lamp-light');
                 lamp.style.opacity = '0.3';
-                setTimeout(() => { lamp.style.opacity = '1'; }, 100);
-                if (Math.random() > 0.7) {
+                setTimeout(() => { lamp.style.opacity = '1'; }, 80);
+                if (Math.random() > 0.6) {
                     setTimeout(() => {
                         lamp.style.opacity = '0.5';
-                        setTimeout(() => { lamp.style.opacity = '1'; }, 80);
-                    }, 150);
+                        setTimeout(() => { lamp.style.opacity = '1'; }, 60);
+                    }, 130);
                 }
             }
-        }, 5000);
+        }, 4000 + Math.random() * 3000);
     }
 
     // ========================
@@ -420,17 +591,18 @@
     function shakeElement(el) {
         el.style.animation = 'none';
         el.offsetHeight;
-        el.style.animation = 'shake 0.3s ease';
-        setTimeout(() => { el.style.animation = ''; }, 300);
+        el.style.animation = 'shake 0.4s ease';
+        setTimeout(() => { el.style.animation = ''; }, 400);
     }
 
-    // Add shake keyframe dynamically
     const style = document.createElement('style');
     style.textContent = `
         @keyframes shake {
             0%, 100% { transform: rotate(1.5deg) translate(0); }
-            25% { transform: rotate(1.5deg) translate(-3px, 0); }
-            75% { transform: rotate(1.5deg) translate(3px, 0); }
+            20% { transform: rotate(1.5deg) translate(-4px, 0); }
+            40% { transform: rotate(1.5deg) translate(4px, 0); }
+            60% { transform: rotate(1.5deg) translate(-2px, 0); }
+            80% { transform: rotate(1.5deg) translate(2px, 0); }
         }
     `;
     document.head.appendChild(style);

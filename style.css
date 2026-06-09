@@ -1,6 +1,7 @@
 :root {
     --paper: #f4f0e8;
     --paper-dark: #e8e0d4;
+    --paper-aged: #f0e8d8;
     --ink: #1a1a1a;
     --ink-light: #3a3a3a;
     --ink-dim: #666;
@@ -11,7 +12,7 @@
     --blue-light: #3a5cc4;
     --desk: #2c1e0f;
     --desk-light: #3d2b18;
-    --lamp: rgba(255, 230, 150, 0.12);
+    --lamp: rgba(255, 230, 150, 0.15);
     --shadow: rgba(0, 0, 0, 0.3);
     --font-type: 'Courier Prime', 'Courier New', monospace;
     --font-hand: 'Caveat', cursive;
@@ -47,17 +48,20 @@ body {
     top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
-    height: 600px;
+    width: 900px;
+    height: 700px;
     background: radial-gradient(ellipse at 50% 0%, var(--lamp) 0%, transparent 70%);
     pointer-events: none;
     z-index: -1;
     animation: lamp-flicker 8s infinite;
+    transition: opacity 0.3s;
 }
 
 @keyframes lamp-flicker {
-    0%, 90%, 100% { opacity: 1; }
-    91% { opacity: 0.7; }
+    0%, 88%, 100% { opacity: 1; }
+    89% { opacity: 0.6; }
+    90% { opacity: 1; }
+    91% { opacity: 0.75; }
     92% { opacity: 1; }
     93% { opacity: 0.85; }
     94% { opacity: 1; }
@@ -81,18 +85,73 @@ body {
     pointer-events: none;
     z-index: 5;
     background-image:
-        radial-gradient(1px 1px at 150px 200px, rgba(255,255,200,0.3), transparent),
-        radial-gradient(1px 1px at 400px 100px, rgba(255,255,200,0.2), transparent),
-        radial-gradient(1px 1px at 600px 350px, rgba(255,255,200,0.3), transparent),
+        radial-gradient(1px 1px at 150px 200px, rgba(255,255,200,0.4), transparent),
+        radial-gradient(1px 1px at 400px 100px, rgba(255,255,200,0.25), transparent),
+        radial-gradient(1px 1px at 600px 350px, rgba(255,255,200,0.35), transparent),
         radial-gradient(1px 1px at 250px 450px, rgba(255,255,200,0.2), transparent),
-        radial-gradient(1px 1px at 700px 200px, rgba(255,255,200,0.15), transparent),
-        radial-gradient(1px 1px at 100px 500px, rgba(255,255,200,0.2), transparent);
-    animation: dust-drift 30s linear infinite;
+        radial-gradient(1px 1px at 700px 200px, rgba(255,255,200,0.2), transparent),
+        radial-gradient(1px 1px at 100px 500px, rgba(255,255,200,0.3), transparent),
+        radial-gradient(1px 1px at 500px 600px, rgba(255,255,200,0.15), transparent),
+        radial-gradient(1px 1px at 800px 400px, rgba(255,255,200,0.2), transparent);
+    animation: dust-drift 25s linear infinite;
 }
 
 @keyframes dust-drift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-20px, -30px); }
+    from { transform: translate(0, 0) rotate(0deg); }
+    to { transform: translate(-20px, -30px) rotate(1deg); }
+}
+
+/* Desk items - scattered around */
+.desk-items {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.desk-pen {
+    position: absolute;
+    bottom: 50px;
+    right: 80px;
+    width: 150px;
+    height: 8px;
+    background: linear-gradient(90deg, #1a1a1a, #333, #1a1a1a);
+    transform: rotate(-25deg);
+    border-radius: 2px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.desk-pen::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 1px;
+    width: 12px;
+    height: 6px;
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+    border-radius: 2px 0 0 2px;
+}
+
+.desk-paperclip {
+    position: absolute;
+    top: 120px;
+    left: 60px;
+    width: 25px;
+    height: 50px;
+    border: 2px solid #aaa;
+    border-radius: 12px;
+    transform: rotate(15deg);
+}
+
+.desk-paperclip::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 4px;
+    width: 13px;
+    height: 34px;
+    border: 2px solid #aaa;
+    border-radius: 8px;
 }
 
 /* ====================== COVER / FOLDER ====================== */
@@ -109,13 +168,14 @@ body {
 .folder {
     width: 420px;
     height: 560px;
-    background: #c4a265;
+    background: linear-gradient(160deg, #c9a96e 0%, #b8954f 50%, #a68040 100%);
     border-radius: 3px;
     position: relative;
     box-shadow:
         4px 4px 15px var(--shadow),
         1px 1px 3px rgba(0,0,0,0.2),
-        inset 0 0 30px rgba(0,0,0,0.1);
+        inset 0 0 30px rgba(0,0,0,0.1),
+        inset 0 -2px 0 rgba(255,255,255,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
@@ -126,7 +186,7 @@ body {
 
 .folder:hover {
     transform: scale(1.02) rotate(-0.5deg);
-    box-shadow: 6px 6px 25px var(--shadow);
+    box-shadow: 6px 6px 25px var(--shadow), 0 0 40px rgba(255,200,50,0.05);
 }
 
 .folder::before {
@@ -134,6 +194,14 @@ body {
     position: absolute;
     inset: 8px;
     border: 1px solid rgba(0,0,0,0.1);
+}
+
+.folder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(180deg, transparent, transparent 3px, rgba(0,0,0,0.01) 3px, rgba(0,0,0,0.01) 4px);
+    pointer-events: none;
 }
 
 .folder-tab {
@@ -173,6 +241,14 @@ body {
     opacity: 0.8;
 }
 
+.folder-barcode {
+    width: 100px;
+    height: 30px;
+    background: repeating-linear-gradient(90deg, #111 0px, #111 2px, transparent 2px, transparent 4px);
+    margin-bottom: 10px;
+    opacity: 0.6;
+}
+
 .folder-classification {
     font-family: var(--font-type);
     font-size: 11px;
@@ -181,9 +257,7 @@ body {
     margin-bottom: 30px;
 }
 
-.folder-logo {
-    margin-bottom: 30px;
-}
+.folder-logo { margin-bottom: 30px; }
 
 .folder-logo-circle {
     width: 70px;
@@ -229,7 +303,8 @@ body {
     min-height: 100vh;
     padding: 40px 20px 80px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .document {
@@ -240,11 +315,13 @@ body {
     position: relative;
     box-shadow:
         5px 5px 20px var(--shadow),
-        0 0 1px rgba(0,0,0,0.3);
-    /* Paper texture */
+        0 0 1px rgba(0,0,0,0.3),
+        -1px 0 0 var(--paper-dark),
+        -3px 0 0 #e0d8cc,
+        -4px 0 1px rgba(0,0,0,0.1);
     background-image:
-        linear-gradient(180deg, transparent 95%, rgba(0,0,0,0.02) 95%),
-        repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(0,100,200,0.03) 28px, rgba(0,100,200,0.03) 29px);
+        linear-gradient(180deg, transparent 95%, rgba(0,0,0,0.015) 95%),
+        repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(0,100,200,0.025) 28px, rgba(0,100,200,0.025) 29px);
 }
 
 .document::before {
@@ -253,7 +330,19 @@ body {
     inset: 0;
     background:
         radial-gradient(ellipse at 80% 20%, rgba(139,105,50,0.04) 0%, transparent 50%),
-        radial-gradient(ellipse at 20% 80%, rgba(139,105,50,0.03) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 80%, rgba(139,105,50,0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.01) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.document::after {
+    content: '';
+    position: absolute;
+    left: 60px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 0, 0, 0.08);
     pointer-events: none;
 }
 
@@ -284,7 +373,7 @@ body {
     position: absolute;
     width: 4px;
     height: 12px;
-    background: #999;
+    background: linear-gradient(180deg, #aaa, #777);
     border-radius: 1px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
@@ -306,6 +395,18 @@ body {
         rgba(139, 90, 43, 0.08) 65%,
         rgba(139, 90, 43, 0.04) 75%,
         transparent 75%);
+    pointer-events: none;
+}
+
+/* Burn mark */
+.burn-mark {
+    position: absolute;
+    bottom: 150px;
+    left: 40px;
+    width: 30px;
+    height: 20px;
+    background: radial-gradient(ellipse, rgba(80,50,20,0.1) 0%, transparent 70%);
+    border-radius: 50%;
     pointer-events: none;
 }
 
@@ -387,7 +488,7 @@ body {
     padding: 5px 25px;
     letter-spacing: 4px;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.5;
     white-space: nowrap;
 }
 
@@ -403,7 +504,7 @@ body {
     padding: 3px 15px;
     letter-spacing: 6px;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 /* ====================== SECTIONS ====================== */
@@ -412,7 +513,7 @@ body {
     position: relative;
     opacity: 0;
     transform: translateY(15px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .doc-section.visible {
@@ -446,7 +547,7 @@ body {
 
 .doc-text {
     color: var(--ink-light);
-    line-height: 1.8;
+    line-height: 1.9;
 }
 
 .underline-hand {
@@ -504,36 +605,39 @@ body {
     position: relative;
     display: inline;
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .redacted-bar {
     position: absolute;
-    inset: -1px -3px;
+    inset: -2px -4px;
     background: #111;
     border-radius: 1px;
-    transition: opacity 0.5s ease;
-    /* Slightly uneven edges like real marker */
-    clip-path: polygon(0% 5%, 2% 0%, 98% 2%, 100% 8%, 99% 95%, 97% 100%, 3% 98%, 0% 92%);
+    transition: all 0.8s ease;
+    clip-path: polygon(0% 5%, 1% 0%, 99% 3%, 100% 8%, 99% 95%, 98% 100%, 2% 97%, 0% 92%);
 }
 
 .redacted-text {
     position: relative;
     z-index: 1;
     color: transparent;
-    transition: color 0.5s ease;
+    transition: color 0.8s ease;
+    font-weight: bold;
 }
 
 .redacted:hover .redacted-bar {
-    opacity: 0.3;
+    opacity: 0.15;
+    background: var(--red);
 }
 
 .redacted:hover .redacted-text {
     color: var(--red);
 }
 
-/* O5 mode: all revealed */
+/* O5 mode: bars dissolve */
 body.o5-access .redacted-bar {
     opacity: 0;
+    transform: scaleX(0);
 }
 
 body.o5-access .redacted-text {
@@ -548,6 +652,11 @@ body.o5-access .redacted-text {
     transform: rotate(-3deg);
     pointer-events: none;
     white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.doc-section.visible .margin-note {
     opacity: 0.8;
 }
 
@@ -568,40 +677,48 @@ body.o5-access .redacted-text {
 .polaroid {
     width: 180px;
     background: white;
-    padding: 10px 10px 35px;
-    box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
+    padding: 10px 10px 40px;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.25);
+    transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
 }
 
-.polaroid:nth-child(1) { transform: rotate(-2deg); }
-.polaroid:nth-child(2) { transform: rotate(1.5deg); }
-.polaroid:nth-child(3) { transform: rotate(-1deg); }
-.polaroid:nth-child(4) { transform: rotate(2.5deg); }
+.polaroid:nth-child(1) { transform: rotate(-3deg); }
+.polaroid:nth-child(2) { transform: rotate(2deg); }
+.polaroid:nth-child(3) { transform: rotate(-1.5deg); }
+.polaroid:nth-child(4) { transform: rotate(3deg); }
 
 .polaroid:hover {
-    transform: rotate(0deg) scale(1.05);
+    transform: rotate(0deg) scale(1.08) !important;
     z-index: 10;
+    box-shadow: 4px 5px 20px rgba(0,0,0,0.3);
 }
 
 .polaroid-image {
     width: 100%;
     aspect-ratio: 1;
-    background: #ddd;
+    background: #e5e5e5;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     color: #999;
     text-align: center;
     padding: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .polaroid-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: sepia(15%) contrast(1.05);
+    transition: filter 0.3s;
+}
+
+.polaroid:hover .polaroid-image img {
+    filter: sepia(0%) contrast(1.1);
 }
 
 .polaroid-caption {
@@ -610,7 +727,7 @@ body.o5-access .redacted-text {
     left: 10px;
     right: 10px;
     font-family: var(--font-hand);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--ink-dim);
     text-align: center;
 }
@@ -620,10 +737,11 @@ body.o5-access .redacted-text {
     top: -8px;
     left: 50%;
     transform: translateX(-50%) rotate(1deg);
-    width: 50px;
+    width: 55px;
     height: 18px;
-    background: rgba(255, 230, 150, 0.6);
+    background: rgba(255, 230, 150, 0.65);
     border: 1px solid rgba(200, 180, 100, 0.3);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .polaroid-clip {
@@ -632,7 +750,7 @@ body.o5-access .redacted-text {
     right: 10px;
     width: 20px;
     height: 30px;
-    border: 2px solid #888;
+    border: 2px solid #999;
     border-radius: 3px 3px 0 0;
     border-bottom: none;
 }
@@ -642,7 +760,12 @@ body.o5-access .redacted-text {
     margin-bottom: 18px;
     padding: 12px 15px;
     border-left: 3px solid var(--ink-dim);
-    background: rgba(0,0,0,0.02);
+    background: rgba(0,0,0,0.015);
+    transition: border-color 0.3s;
+}
+
+.ability-item:hover {
+    border-left-color: var(--red);
 }
 
 .ability-name {
@@ -662,9 +785,14 @@ body.o5-access .redacted-text {
 .incident-item {
     margin-bottom: 20px;
     padding: 15px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: rgba(192,57,43,0.02);
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(192,57,43,0.015);
     position: relative;
+    transition: background 0.3s;
+}
+
+.incident-item:hover {
+    background: rgba(192,57,43,0.04);
 }
 
 .incident-item::before {
@@ -701,14 +829,21 @@ body.o5-access .redacted-text {
 .note-item {
     margin-bottom: 15px;
     padding: 12px 15px;
-    background: rgba(0,0,0,0.02);
+    background: rgba(0,0,0,0.015);
     border-left: 2px solid var(--ink-dim);
     font-style: italic;
+    transition: border-color 0.3s;
+}
+
+.note-item:hover {
+    border-left-color: var(--blue);
 }
 
 .note-item.o5-note {
     border-left-color: var(--red);
     background: rgba(192,57,43,0.03);
+    border: 1px dashed var(--red);
+    border-left: 3px solid var(--red);
 }
 
 .note-author {
@@ -727,10 +862,10 @@ body.o5-access .redacted-text {
 
 /* ====================== CLASSIFIED FOLDER ====================== */
 .classified-folder {
-    padding: 30px;
+    padding: 35px;
     text-align: center;
     background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.01) 10px, rgba(0,0,0,0.01) 20px);
-    border: 1px dashed var(--red);
+    border: 2px dashed var(--red);
     position: relative;
 }
 
@@ -755,37 +890,44 @@ body.o5-access .redacted-text {
 }
 
 .revealed-section {
-    padding: 15px;
+    padding: 20px;
     border: 1px solid var(--red);
     background: rgba(192,57,43,0.02);
-    margin-top: 10px;
+    margin-top: 15px;
+    animation: reveal-fade 0.8s ease;
+}
+
+@keyframes reveal-fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ====================== STICKY NOTE ====================== */
 .sticky-note {
-    width: 280px;
-    margin: 30px auto 0;
-    padding: 25px 20px;
-    background: #fff9c4;
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.15);
+    width: 300px;
+    margin: 40px auto 0;
+    padding: 30px 25px;
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    box-shadow: 3px 4px 12px rgba(0,0,0,0.2), -1px -1px 0 rgba(255,255,255,0.5) inset;
     transform: rotate(1.5deg);
     position: relative;
 }
 
 .sticky-tape {
     position: absolute;
-    top: -8px;
+    top: -10px;
     left: 50%;
     transform: translateX(-50%) rotate(-2deg);
-    width: 60px;
-    height: 18px;
+    width: 65px;
+    height: 20px;
     background: rgba(255, 230, 150, 0.7);
     border: 1px solid rgba(200, 180, 100, 0.3);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .sticky-title {
     font-family: var(--font-hand);
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     color: var(--red);
     text-align: center;
@@ -794,23 +936,24 @@ body.o5-access .redacted-text {
 
 .sticky-desc {
     font-family: var(--font-hand);
-    font-size: 16px;
+    font-size: 17px;
     color: var(--ink-dim);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .sticky-input {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: none;
-    border-bottom: 2px solid var(--ink-dim);
+    border-bottom: 2px dashed var(--ink-dim);
     background: transparent;
     font-family: var(--font-type);
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
     outline: none;
     color: var(--ink);
+    transition: border-color 0.3s;
 }
 
 .sticky-input:focus {
@@ -819,13 +962,13 @@ body.o5-access .redacted-text {
 
 .sticky-status {
     font-family: var(--font-hand);
-    font-size: 16px;
+    font-size: 18px;
     text-align: center;
-    margin-top: 8px;
+    margin-top: 10px;
     min-height: 24px;
 }
 
-.sticky-status.granted { color: green; }
+.sticky-status.granted { color: #2e7d32; font-weight: bold; }
 .sticky-status.denied { color: var(--red); }
 
 /* ====================== VIDEO ====================== */
@@ -839,12 +982,10 @@ body.o5-access .redacted-text {
     justify-content: center;
     font-size: 12px;
     color: #999;
+    font-family: var(--font-type);
 }
 
-.video-slot iframe, .video-slot video {
-    width: 100%;
-    height: 100%;
-}
+.video-slot iframe, .video-slot video { width: 100%; height: 100%; }
 
 /* ====================== SCREAMER ====================== */
 .screamer {
@@ -895,25 +1036,86 @@ body.o5-access .redacted-text {
     inset: 0;
     background: #000;
     z-index: 9999;
+    opacity: 0;
     transition: opacity 2s;
+}
+
+.blackout.active {
+    opacity: 1;
 }
 
 /* ====================== O5 MODE ====================== */
 body.o5-access .sticky-note {
-    background: #ffe0e0;
+    background: linear-gradient(135deg, #ffcdd2 0%, #ffab91 100%);
+    box-shadow: 3px 4px 12px rgba(192,57,43,0.2), -1px -1px 0 rgba(255,255,255,0.5) inset;
 }
 
 body.o5-access .lamp-light {
-    background: radial-gradient(ellipse at 50% 0%, rgba(255, 100, 100, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 100, 100, 0.1) 0%, transparent 70%);
+}
+
+body.o5-access .doc-header-line {
+    background: var(--red);
+}
+
+body.o5-access .section-title {
+    color: var(--red);
+    border-bottom-color: var(--red);
+}
+
+/* ====================== HEARTBEAT MONITOR ====================== */
+.heartbeat-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: #111;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.heartbeat-label {
+    font-size: 10px;
+    color: #0f0;
+    font-family: var(--font-type);
+    margin-bottom: 5px;
+}
+
+.heartbeat-line {
+    height: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.heartbeat-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    animation: heartbeat-scroll 3s linear infinite;
+}
+
+@keyframes heartbeat-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.heartbeat-value {
+    font-size: 11px;
+    color: #0f0;
+    text-align: right;
+    margin-top: 3px;
+    font-family: var(--font-type);
 }
 
 /* ====================== RESPONSIVE ====================== */
 @media (max-width: 768px) {
     .document { padding: 30px 25px 50px; }
-    .folder { width: 320px; height: 440px; padding: 30px; }
+    .folder { width: 300px; height: 420px; padding: 25px; }
     .folder-stamp { font-size: 20px; }
-    .big-stamp { font-size: 24px; }
+    .big-stamp { font-size: 22px; }
     .polaroid-grid { flex-direction: column; align-items: center; }
     .polaroid { width: 200px; }
     .margin-note { display: none; }
+    .sticky-note { width: 260px; }
 }
