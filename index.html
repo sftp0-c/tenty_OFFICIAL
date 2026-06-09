@@ -3,270 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCP Foundation — Досье SCP-4228-RU</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>SITE-17 TERMINAL — SCP-4228-RU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- COVER -->
-    <div id="cover-screen">
-        <div class="desk-surface"></div>
-        <div class="desk-lamp-fixture"></div>
-        <div class="desk-lamp-light"></div>
-        <div class="dust-particles"></div>
-        <div class="desk-items">
-            <div class="desk-pen"></div>
-            <div class="desk-pen-2"></div>
-            <div class="desk-paperclip clip-1"></div>
-            <div class="desk-paperclip clip-2"></div>
-            <div class="desk-coffee-mug"></div>
-            <div class="desk-glasses"></div>
-            <div class="desk-badge"></div>
-            <div class="desk-post-it"></div>
+    <!-- BOOT SEQUENCE -->
+    <div id="boot-screen">
+        <div class="boot-content">
+            <div class="boot-logo">
+                <pre class="boot-ascii">
+ ███████╗ ██████╗██████╗
+ ██╔════╝██╔════╝██╔══██╗
+ ███████╗██║     ██████╔╝
+ ╚════██║██║     ██╔═══╝
+ ███████║╚██████╗██║
+ ╚══════╝ ╚═════╝╚═╝
+                </pre>
+                <div class="boot-subtitle">SECURE CONTAIN PROTECT</div>
+            </div>
+            <div id="boot-log" class="boot-log"></div>
+            <div class="boot-progress">
+                <div class="boot-progress-bar" id="boot-bar"></div>
+            </div>
         </div>
-        <div class="folder" id="folder">
-            <div class="folder-tab">SCP-4228-RU</div>
-            <div class="folder-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-            <div class="folder-stamp-2">КЕТЕР</div>
-            <div class="folder-barcode"></div>
-            <div class="folder-classification">УРОВЕНЬ ДОПУСКА: 4/4228</div>
-            <div class="folder-logo"><div class="folder-logo-circle">SCP</div></div>
-            <div class="folder-serial">SER. №: 4228-7721-RU</div>
-            <div class="folder-wear"></div>
-            <div class="folder-instruction">Нажмите чтобы открыть досье</div>
-        </div>
+        <div class="crt-overlay"></div>
     </div>
 
-    <!-- MAIN DOCUMENT -->
-    <div id="document-container" class="hidden">
-        <div class="desk-bg"></div>
-        <div class="lamp-light"></div>
-        <div class="dust-particles"></div>
-        <!-- Desk decorations around document -->
-        <div class="desk-side-items">
-            <div class="side-pen"></div>
-            <div class="side-clip-1"></div>
-            <div class="side-clip-2"></div>
-            <div class="side-eraser"></div>
-            <div class="side-stamp-pad"></div>
-            <div class="side-usb"></div>
-            <div class="side-post-it-stack"></div>
-        </div>
+    <!-- MAIN TERMINAL -->
+    <div id="terminal" class="hidden">
+        <!-- CRT Effects -->
+        <div class="crt-overlay"></div>
+        <div class="crt-vignette"></div>
+        <div class="crt-flicker"></div>
+        <canvas id="noise-canvas" class="noise-canvas"></canvas>
 
-        <!-- Terminal monitor (ambient detail) -->
-        <div class="terminal-widget">
-            <div class="terminal-header">SITE-17 MONITORING</div>
-            <div class="terminal-body">
-                <div class="terminal-line"><span class="t-green">STATUS:</span> CONTAINED</div>
-                <div class="terminal-line"><span class="t-yellow">THREAT:</span> BLACK</div>
-                <div class="terminal-line"><span class="t-red">ALERT:</span> NONE</div>
-                <div class="terminal-line t-dim">UPD: <span id="terminal-time"></span></div>
+        <!-- Header bar -->
+        <header class="term-header">
+            <div class="term-header-left">
+                <span class="term-logo">SCP</span>
+                <span class="term-title">SITE-17 TERMINAL v4.2.28</span>
             </div>
-        </div>
-
-        <div class="document">
-            <!-- Watermark -->
-            <div class="watermark">SCP</div>
-
-            <!-- Paper details -->
-            <div class="paper-fold top-right"></div>
-            <div class="paper-fold bottom-left"></div>
-            <div class="staple staple-1"></div>
-            <div class="staple staple-2"></div>
-            <div class="coffee-stain"></div>
-            <div class="burn-hole burn-1"></div>
-            <div class="burn-hole burn-2"></div>
-            <div class="burn-hole burn-3"></div>
-            <div class="fingerprint"></div>
-            <div class="red-margin-line"></div>
-
-            <!-- Pinned note -->
-            <div class="pinned-note">
-                <div class="pin"></div>
-                <span>НЕ ПЕРЕДАВАТЬ В АРХИВ</span>
+            <div class="term-header-right">
+                <span class="term-status" id="term-status">● STABLE</span>
+                <span class="term-clock" id="term-clock">00:00:00</span>
             </div>
+        </header>
 
-            <!-- Approve stamp -->
-            <div class="approve-stamp">
-                <div class="approve-text">УТВЕРЖДАЮ</div>
-                <div class="approve-signature">~ неразборчиво ~</div>
-                <div class="approve-date">14.03.2026</div>
-            </div>
+        <!-- Content area -->
+        <main class="term-content" id="term-content">
+            <!-- Section: Object Header -->
+            <section class="term-section" data-section="header">
+                <div class="term-prompt">&gt; cat /scp/4228/header.dat</div>
+                <div class="term-output">
+                    <div class="term-line"><span class="t-dim">ОБЪЕКТ №:</span> <span class="t-bright" id="obj-number"></span></div>
+                    <div class="term-line"><span class="t-dim">КОДОВОЕ ИМЯ:</span> <span class="t-warn" id="obj-codename"></span></div>
+                    <div class="term-line"><span class="t-dim">КЛАССИФИКАЦИЯ:</span> <span class="t-danger" id="obj-class"></span> <span class="t-dim" id="obj-class-note"></span></div>
+                </div>
+            </section>
 
-            <!-- Big stamps -->
-            <div class="big-stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-            <div class="big-stamp-2">КЕТЕР</div>
+            <!-- Section: Containment -->
+            <section class="term-section" data-section="containment">
+                <div class="term-prompt">&gt; cat /scp/4228/containment.doc</div>
+                <div class="term-output">
+                    <div class="section-label">[ ОСОБЫЕ УСЛОВИЯ СОДЕРЖАНИЯ ]</div>
+                    <div class="term-text" id="obj-containment"></div>
+                </div>
+            </section>
 
-            <!-- Scotch tape patches -->
-            <div class="scotch-tape tape-1"></div>
-            <div class="scotch-tape tape-2"></div>
-            <div class="scotch-tape tape-3"></div>
+            <!-- Section: Discovery -->
+            <section class="term-section" data-section="discovery">
+                <div class="term-prompt">&gt; cat /scp/4228/discovery.log</div>
+                <div class="term-output">
+                    <div class="section-label">[ ИСТОРИЯ ОБНАРУЖЕНИЯ ]</div>
+                    <div class="term-meta"><span class="t-dim">📌</span> ТКПСТ, г. Тюмень — 14.03.2026</div>
+                    <div class="term-text" id="obj-discovery"></div>
+                </div>
+            </section>
 
-            <!-- DOC HEADER -->
-            <div class="doc-header">
-                <div class="doc-header-left">
-                    <div class="scp-emblem">SCP</div>
-                    <div class="doc-header-info">
-                        <span class="doc-header-text">SECURE CONTAIN PROTECT</span>
-                        <span class="doc-header-sub">Западно-Сибирское отделение</span>
+            <!-- Section: Description -->
+            <section class="term-section" data-section="description">
+                <div class="term-prompt">&gt; cat /scp/4228/description.dat</div>
+                <div class="term-output">
+                    <div class="section-label">[ ОПИСАНИЕ ОБЪЕКТА ]</div>
+                    <div class="term-text" id="obj-description"></div>
+                    <!-- Monitors -->
+                    <div class="monitor-row">
+                        <div class="monitor-box">
+                            <div class="monitor-label">ПУЛЬС</div>
+                            <div class="monitor-value t-green">34 BPM</div>
+                            <div class="monitor-bar"><div class="monitor-fill pulse-anim" style="width:22%"></div></div>
+                        </div>
+                        <div class="monitor-box">
+                            <div class="monitor-label">РАДИАЦИЯ</div>
+                            <div class="monitor-value t-danger">47,000 Бк/кг</div>
+                            <div class="monitor-bar"><div class="monitor-fill rad-anim" style="width:78%"></div></div>
+                        </div>
+                        <div class="monitor-box">
+                            <div class="monitor-label">ТЕМПЕРАТУРА</div>
+                            <div class="monitor-value t-warn">39.2°C</div>
+                            <div class="monitor-bar"><div class="monitor-fill temp-anim" style="width:55%"></div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="doc-header-right">
-                    <span class="doc-class">СЕКРЕТНО</span>
-                    <span class="doc-copy">КОПИЯ №3</span>
-                    <span class="doc-date">14.03.2026</span>
+            </section>
+
+            <!-- Section: Photos -->
+            <section class="term-section" data-section="photos">
+                <div class="term-prompt">&gt; ls /scp/4228/media/ --preview</div>
+                <div class="term-output">
+                    <div class="section-label">[ ВИЗУАЛЬНЫЕ МАТЕРИАЛЫ ]</div>
+                    <div class="photos-grid" id="photo-grid"></div>
                 </div>
-                <div class="doc-header-line"></div>
-            </div>
-
-            <!-- SECTION: Object number -->
-            <section class="doc-section" id="sec-header">
-                <h1 class="doc-title">Объект №: <span id="obj-number"></span></h1>
-                <p class="doc-subtitle">Кодовое имя: "<span id="obj-codename"></span>"</p>
-                <div class="hand-circle" style="top:-5px;left:60px;width:180px;height:40px;"></div>
             </section>
 
-            <!-- SECTION: Class -->
-            <section class="doc-section" id="sec-class">
-                <h2 class="section-title">Класс объекта</h2>
-                <div class="class-box">
-                    <span class="class-name" id="obj-class"></span>
-                    <span class="class-note" id="obj-class-note"></span>
+            <!-- Section: Abilities -->
+            <section class="term-section" data-section="abilities">
+                <div class="term-prompt">&gt; cat /scp/4228/abilities.enc</div>
+                <div class="term-output">
+                    <div class="section-label">[ АНОМАЛЬНЫЕ СВОЙСТВА ]</div>
+                    <div id="abilities-list"></div>
                 </div>
-                <div class="hand-underline" style="width:120px;margin-top:8px;"></div>
-                <div class="hand-arrow" style="top:5px;right:20px;">!</div>
             </section>
 
-            <!-- SECTION: Containment -->
-            <section class="doc-section" id="sec-containment">
-                <h2 class="section-title">Особые условия содержания</h2>
-                <div class="doc-text" id="obj-containment"></div>
-                <div class="margin-note margin-note-red" style="top:15px;right:-35px;transform:rotate(-2deg);">ОПАСЕН!!!</div>
-                <div class="page-footer">Стр. 1/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- SECTION: Discovery -->
-            <section class="doc-section" id="sec-discovery">
-                <h2 class="section-title">История обнаружения</h2>
-                <div class="location-tag"><span class="tag-pin">📌</span> ТКПСТ, г. Тюмень — 14.03.2026</div>
-                <div class="doc-text" id="obj-discovery"></div>
-                <div class="margin-note margin-note-blue" style="top:200px;right:-35px;transform:rotate(-1deg);">← парта в музей</div>
-                <div class="margin-note margin-note-red" style="top:350px;right:-35px;transform:rotate(1deg);">12 СЛОНОВ?!</div>
-                <div class="page-footer">Стр. 2/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- SECTION: Description -->
-            <section class="doc-section" id="sec-description">
-                <h2 class="section-title">Описание</h2>
-                <div class="doc-text" id="obj-description"></div>
-                <div class="margin-note margin-note-red" style="top:5px;right:-35px;">НЕ ПРИБЛИЖАТЬСЯ</div>
-                <!-- Heartbeat monitor -->
-                <div class="heartbeat-container">
-                    <div class="hb-label">МОНИТОРИНГ ОБЪЕКТА — ПУЛЬС</div>
-                    <div class="hb-line">
-                        <svg class="hb-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
-                            <polyline fill="none" stroke="#0f0" stroke-width="1.5" points="0,20 30,20 35,20 40,5 45,35 50,15 55,25 60,20 100,20 130,20 135,20 140,5 145,35 150,15 155,25 160,20 200,20 230,20 235,20 240,5 245,35 250,15 255,25 260,20 300,20 330,20 335,20 340,5 345,35 350,15 355,25 360,20 400,20"/>
-                        </svg>
+            <!-- Section: Phobia -->
+            <section class="term-section" data-section="phobia">
+                <div class="term-prompt">&gt; cat /scp/4228/weakness.o5</div>
+                <div class="term-output">
+                    <div class="section-label">[ ФОБИИ И СЛАБОСТИ ]</div>
+                    <div class="classified-block" id="phobia-classified">
+                        <div class="classified-border"></div>
+                        <div class="classified-text">
+                            <span class="t-danger">⚠ УРОВЕНЬ ДОСТУПА НЕДОСТАТОЧЕН</span><br>
+                            <span class="t-dim">Требуется авторизация O5</span>
+                        </div>
                     </div>
-                    <div class="hb-data">
-                        <span>34 BPM</span>
-                        <span class="hb-warn">АНОМАЛЬНО НИЗКИЙ</span>
+                    <div class="hidden" id="phobia-revealed">
+                        <div class="term-text" id="phobia-text"></div>
+                        <div class="video-container" id="phobia-video"></div>
                     </div>
                 </div>
-                <!-- Radiation bar -->
-                <div class="radiation-bar">
-                    <div class="rad-label">☢ УРОВЕНЬ РАДИАЦИИ КАМЕРЫ</div>
-                    <div class="rad-track"><div class="rad-fill"></div></div>
-                    <div class="rad-value">47,000 Бк/кг — КРИТИЧЕСКИЙ</div>
+            </section>
+
+            <!-- Section: Incidents -->
+            <section class="term-section" data-section="incidents">
+                <div class="term-prompt">&gt; cat /scp/4228/incidents/*.log</div>
+                <div class="term-output">
+                    <div class="section-label">[ ЗАРЕГИСТРИРОВАННЫЕ ИНЦИДЕНТЫ ]</div>
+                    <div id="incidents-list"></div>
                 </div>
-                <div class="page-footer">Стр. 3/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
 
-            <!-- Photos -->
-            <section class="doc-section" id="sec-photos">
-                <h2 class="section-title">Визуальные материалы</h2>
-                <div class="polaroid-grid" id="photo-grid"></div>
-                <div class="page-footer">Стр. 4/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- SECTION: Abilities -->
-            <section class="doc-section" id="sec-abilities">
-                <h2 class="section-title">Аномальные свойства</h2>
-                <div id="abilities-list"></div>
-                <div class="margin-note margin-note-red" style="top:120px;right:-35px;transform:rotate(-3deg);">серьёзно??</div>
-                <div class="page-footer">Стр. 5-6/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- SECTION: Phobia -->
-            <section class="doc-section" id="sec-phobia">
-                <h2 class="section-title">Фобии и слабости</h2>
-                <div class="classified-folder" id="phobia-classified">
-                    <div class="classified-tape"></div>
-                    <div class="classified-icon">🔒</div>
-                    <div class="classified-label">ЗАСЕКРЕЧЕНО — УРОВЕНЬ O5</div>
-                    <div class="classified-sub">Для получения доступа введите код в терминале ниже</div>
-                    <div class="classified-tape bottom"></div>
+            <!-- Section: Notes -->
+            <section class="term-section" data-section="notes">
+                <div class="term-prompt">&gt; cat /scp/4228/notes.txt</div>
+                <div class="term-output">
+                    <div class="section-label">[ ПРИМЕЧАНИЯ ПЕРСОНАЛА ]</div>
+                    <div id="notes-list"></div>
                 </div>
-                <div class="revealed-section hidden" id="phobia-revealed">
-                    <div class="doc-text" id="phobia-text"></div>
-                    <div class="video-slot" id="phobia-video"></div>
+            </section>
+
+            <!-- Section: O5 Access -->
+            <section class="term-section" data-section="o5">
+                <div class="term-prompt">&gt; sudo access --level=O5 --dossier=4228</div>
+                <div class="term-output">
+                    <div class="o5-terminal">
+                        <div class="o5-label">ВВЕДИТЕ КОД ДОСТУПА O5:</div>
+                        <div class="o5-input-row">
+                            <span class="o5-cursor">&gt;</span>
+                            <input type="text" id="o5-input" class="o5-input" autocomplete="off" spellcheck="false">
+                        </div>
+                        <div class="o5-status" id="o5-status"></div>
+                    </div>
                 </div>
-                <div class="page-footer">Стр. 7/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
             </section>
+        </main>
 
-            <!-- SECTION: Incidents -->
-            <section class="doc-section" id="sec-incidents">
-                <h2 class="section-title">Зарегистрированные инциденты</h2>
-                <div id="incidents-list"></div>
-                <div class="margin-note margin-note-red" style="top:400px;right:-35px;transform:rotate(2deg);">кто разрешил?!</div>
-                <div class="page-footer">Стр. 8-10/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- SECTION: Notes -->
-            <section class="doc-section" id="sec-notes">
-                <h2 class="section-title">Примечания персонала</h2>
-                <div id="notes-list"></div>
-                <div class="page-footer">Стр. 11/12 | SCP-4228-RU | КОПИЯ №3 | НЕ ВЫНОСИТЬ</div>
-            </section>
-
-            <!-- O5 Access -->
-            <section class="doc-section" id="sec-o5">
-                <div class="sticky-note" id="o5-sticky">
-                    <div class="sticky-tape"></div>
-                    <p class="sticky-title">O5 EYES ONLY</p>
-                    <p class="sticky-desc">Код полного доступа:</p>
-                    <input type="text" id="o5-input" class="sticky-input" placeholder="введите код..." autocomplete="off" spellcheck="false">
-                    <p class="sticky-status" id="o5-status"></p>
-                </div>
-                <div class="page-footer">Стр. 12/12 | SCP-4228-RU | КОНЕЦ ДОКУМЕНТА</div>
-            </section>
-
-            <!-- Torn paper piece -->
-            <div class="torn-paper">
-                <div class="torn-tape"></div>
-                <p class="torn-text">Приложение 4228-E: Если объект попросит "поговорить" — ОТКАЗАТЬ. Последний раз когда мы согласились, д-р Ковалёв неделю выполнял его приказы.</p>
+        <!-- Status bar -->
+        <footer class="term-footer">
+            <div class="footer-left">
+                <span class="footer-item">BREACH: <span id="breach-level" class="t-green">0%</span></span>
+                <span class="footer-item">CONN: <span class="t-green">ACTIVE</span></span>
             </div>
+            <div class="footer-right">
+                <span class="footer-item">MEM: 847MB/1024MB</span>
+                <span class="footer-item">SCP-4228-RU</span>
+            </div>
+        </footer>
+
+        <!-- Breach overlay -->
+        <div id="breach-overlay" class="breach-overlay hidden">
+            <div class="breach-warning" id="breach-warnings"></div>
         </div>
 
-        <!-- Second terminal (right side) -->
-        <div class="terminal-widget terminal-right">
-            <div class="terminal-header">CAMERA FEED #4228</div>
-            <div class="terminal-body">
-                <div class="terminal-line t-dim">OBJECT: <span class="t-green">INACTIVE</span></div>
-                <div class="terminal-line t-dim">MOVEMENT: 0.0%</div>
-                <div class="terminal-line t-dim">TEMP: 39.2°C</div>
-                <div class="terminal-line"><span class="t-red blink-slow">● REC</span></div>
-            </div>
+        <!-- Crack overlay -->
+        <div id="crack-overlay" class="crack-overlay hidden">
+            <svg class="crack-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path class="crack-line c1" d="M45,0 L48,15 L42,30 L50,45 L44,55 L47,70 L43,85 L46,100"/>
+                <path class="crack-line c2" d="M60,0 L58,20 L63,35 L55,50 L62,65 L57,80 L60,100"/>
+                <path class="crack-line c3" d="M30,30 L35,35 L42,30"/>
+                <path class="crack-line c4" d="M55,50 L70,55 L80,52"/>
+                <path class="crack-line c5" d="M44,55 L30,60 L20,58"/>
+            </svg>
         </div>
     </div>
 
     <!-- Screamer -->
     <div id="screamer" class="screamer hidden"></div>
-    <!-- Blackout -->
-    <div id="blackout" class="blackout hidden"></div>
 
     <script src="script.js"></script>
 </body>
