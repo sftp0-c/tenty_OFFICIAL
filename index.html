@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP Foundation — Объект SCP-4228-RU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div id="access-screen">
+        <div class="access-overlay"></div>
+        <div class="door door-left"></div>
+        <div class="door door-right"></div>
+        <div class="card-reader" id="cardReader">
+            <div class="reader-body">
+                <div class="reader-slot"></div>
+                <div class="reader-light" id="readerLight"></div>
+                <p class="reader-text">ПРОВЕДИТЕ КАРТУ ДОСТУПА</p>
+                <p class="reader-hint">↓ Свайп вниз ↓</p>
+            </div>
+            <div class="card" id="accessCard"></div>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden">
+        <div class="scanlines"></div>
+        <div class="flicker-overlay"></div>
+        <div class="warning-corner warning-tl">⚠ WARNING</div>
+        <div class="warning-corner warning-br">⚠ CONTAINMENT ACTIVE</div>
+
+        <header class="scp-header">
+            <div class="scp-logo">
+                <div class="logo-circle">
+                    <span>SCP</span>
+                </div>
+            </div>
+            <h1 class="glitch-title" data-text="SECURE. CONTAIN. PROTECT.">SECURE. CONTAIN. PROTECT.</h1>
+            <div class="days-counter">
+                <span>Дней без инцидентов: </span>
+                <span id="daysCount">0</span>
+            </div>
+        </header>
+
+        <main class="scp-document">
+            <section class="doc-section" id="section-header">
+                <div class="section-bar"></div>
+                <h2 class="glitch-title" data-text="Объект №: SCP-4228-RU">Объект №: <span id="obj-number">SCP-4228-RU</span></h2>
+                <p class="codename">Кодовое имя: "<span id="obj-codename" class="typewriter"></span>"</p>
+            </section>
+
+            <section class="doc-section" id="section-class">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Класс объекта">Класс объекта</h3>
+                <p class="object-class">
+                    <span class="class-badge keter" id="obj-class">Кетер</span>
+                    <span class="class-note" id="obj-class-note">(пересмотр на Аполлион — в процессе)</span>
+                </p>
+            </section>
+
+            <section class="doc-section" id="section-containment">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Особые условия содержания">Особые условия содержания</h3>
+                <div class="doc-text" id="obj-containment"></div>
+            </section>
+
+            <section class="doc-section" id="section-discovery">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="История обнаружения">История обнаружения</h3>
+                <div class="doc-text" id="obj-discovery"></div>
+            </section>
+
+            <section class="doc-section" id="section-description">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Описание">Описание</h3>
+                <div class="doc-text" id="obj-description"></div>
+                <div class="photo-grid" id="photo-grid"></div>
+            </section>
+
+            <section class="doc-section" id="section-abilities">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Аномальные свойства">Аномальные свойства</h3>
+                <div id="abilities-list"></div>
+            </section>
+
+            <section class="doc-section" id="section-phobia">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Фобии и слабости">Фобии и слабости</h3>
+                <div class="classified-block" id="phobia-block">
+                    <p class="classified-text">█ ДАННЫЕ ЗАСЕКРЕЧЕНЫ — ТРЕБУЕТСЯ ПОЛНЫЙ ДОСТУП █</p>
+                </div>
+                <div class="revealed-content hidden" id="phobia-content"></div>
+            </section>
+
+            <section class="doc-section" id="section-incidents">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Инциденты">Инциденты</h3>
+                <div id="incidents-list"></div>
+            </section>
+
+            <section class="doc-section" id="section-notes">
+                <div class="section-bar"></div>
+                <h3 class="glitch-title" data-text="Примечания персонала">Примечания персонала</h3>
+                <div id="notes-list"></div>
+            </section>
+
+            <section class="o5-access" id="o5-section">
+                <div class="o5-terminal">
+                    <p class="o5-label">// ТЕРМИНАЛ O5 — ВВЕДИТЕ КОД АВТОРИЗАЦИИ</p>
+                    <input type="text" id="o5-input" class="o5-input" placeholder="_ _ _ _ _ _ _ _ _ _ _ _" autocomplete="off">
+                    <p class="o5-status" id="o5-status"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="scp-footer">
+            <p>SCP Foundation — Secure. Contain. Protect.</p>
+            <p class="footer-classified">Документ класса: СОВЕРШЕННО СЕКРЕТНО</p>
+        </footer>
+    </div>
+
+    <div id="screamer" class="screamer hidden">
+        <div class="screamer-img"></div>
+    </div>
+
+    <div id="unauthorized" class="unauthorized hidden">
+        <h1>⚠ НЕСАНКЦИОНИРОВАННЫЙ ДОСТУП ⚠</h1>
+        <p>НАРУШЕНИЕ ПРОТОКОЛА БЕЗОПАСНОСТИ</p>
+        <p>МЕСТОПОЛОЖЕНИЕ ЗАФИКСИРОВАНО</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — SCP-4228-RU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="login-screen">
+        <div class="login-container">
+            <h1>ADMIN ACCESS</h1>
+            <p class="login-subtitle">SCP Foundation — Panel</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>LOGIN</label>
+                    <input type="text" id="login-input" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="password-input">
+                </div>
+                <button type="submit" class="btn-login">АВТОРИЗАЦИЯ</button>
+                <p id="login-error" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <header class="admin-header">
+            <h1>SCP-4228-RU — Admin Panel</h1>
+            <div class="header-actions">
+                <span id="save-status"></span>
+                <button id="btn-save" class="btn-save">СОХРАНИТЬ</button>
+                <button id="btn-logout" class="btn-logout">ВЫХОД</button>
+            </div>
+        </header>
+
+        <main class="admin-content">
+            <div class="admin-section">
+                <h2>GitHub Token</h2>
+                <p class="section-hint">Введите один раз — сохраняется в браузере</p>
+                <input type="password" id="github-token" class="full-input" placeholder="ghp_...">
+            </div>
+
+            <div class="admin-section">
+                <h2>Основная информация</h2>
+                <div class="field-group">
+                    <label>Номер объекта</label>
+                    <input type="text" id="edit-number" class="full-input">
+                </div>
+                <div class="field-group">
+                    <label>Кодовое имя</label>
+                    <input type="text" id="edit-codename" class="full-input">
+                </div>
+                <div class="field-group">
+                    <label>Класс</label>
+                    <input type="text" id="edit-class" class="full-input">
+                </div>
+                <div class="field-group">
+                    <label>Примечание к классу</label>
+                    <input type="text" id="edit-class-note" class="full-input">
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Условия содержания</h2>
+                <textarea id="edit-containment" class="full-textarea" rows="8"></textarea>
+            </div>
+
+            <div class="admin-section">
+                <h2>История обнаружения</h2>
+                <textarea id="edit-discovery" class="full-textarea" rows="10"></textarea>
+            </div>
+
+            <div class="admin-section">
+                <h2>Описание</h2>
+                <textarea id="edit-description" class="full-textarea" rows="4"></textarea>
+            </div>
+
+            <div class="admin-section">
+                <h2>Фотографии (URL)</h2>
+                <div id="photos-editor"></div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Аномальные свойства</h2>
+                <div id="abilities-editor"></div>
+                <button id="btn-add-ability" class="btn-add">+ Добавить свойство</button>
+            </div>
+
+            <div class="admin-section">
+                <h2>Фобии (скрытый контент)</h2>
+                <textarea id="edit-phobia" class="full-textarea" rows="4"></textarea>
+                <div class="field-group">
+                    <label>URL видео (embed)</label>
+                    <input type="text" id="edit-phobia-video" class="full-input" placeholder="https://www.youtube.com/embed/...">
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Инциденты</h2>
+                <div id="incidents-editor"></div>
+                <button id="btn-add-incident" class="btn-add">+ Добавить инцидент</button>
+            </div>
+
+            <div class="admin-section">
+                <h2>Примечания персонала</h2>
+                <div id="notes-editor"></div>
+                <button id="btn-add-note" class="btn-add">+ Добавить примечание</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
