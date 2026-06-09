@@ -2,8 +2,7 @@
     'use strict';
 
     const CREDENTIALS = {
-        login: 'micasimka',
-        passHash: '6d616b6b736f73736f73697069736f73' // hex of makksossosipisos
+        login: 'micasimka'
     };
 
     const REPO = 'sftp0-c/tenty_OFFICIAL';
@@ -14,20 +13,15 @@
     // ========================
     // AUTH
     // ========================
-    function hashPass(pass) {
-        return Array.from(pass).map(c => c.charCodeAt(0).toString(16)).join('');
-    }
-
-    function checkAuth(login, password) {
-        return login === CREDENTIALS.login && hashPass(password) === CREDENTIALS.passHash;
+    function checkAuth(login) {
+        return login === CREDENTIALS.login;
     }
 
     document.getElementById('login-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const login = document.getElementById('login-input').value;
-        const password = document.getElementById('password-input').value;
 
-        if (checkAuth(login, password)) {
+        if (checkAuth(login)) {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-panel').classList.remove('hidden');
             initAdmin();
