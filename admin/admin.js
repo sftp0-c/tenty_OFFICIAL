@@ -105,6 +105,12 @@
         renderIncidents();
         renderIncidentsO5();
         renderNotes();
+        renderNotifications();
+        renderChatPhrases();
+        renderCameras();
+        renderBootLines();
+        renderEasterEggs();
+        loadStats();
     }
 
     // ========================
@@ -269,6 +275,118 @@
     }
 
     // ========================
+    // RENDER: NOTIFICATIONS
+    // ========================
+    function renderNotifications() {
+        if (!contentData.notifications) contentData.notifications = [];
+        const container = document.getElementById('notif-editor');
+        container.innerHTML = '';
+        contentData.notifications.forEach((n, i) => {
+            const item = document.createElement('div');
+            item.className = 'editor-item';
+            item.innerHTML = `
+                <div class="item-header"><span class="item-number">#${i+1}</span><button class="btn-remove" data-type="notif" data-index="${i}">УДАЛИТЬ</button></div>
+                <div class="field-row">
+                    <div class="field-group"><label>Текст</label><input type="text" class="full-input notif-text" data-index="${i}" value="${esc(n.text || '')}"></div>
+                    <div class="field-group"><label>Уровень (green/orange/red/black)</label><input type="text" class="full-input notif-level" data-index="${i}" value="${esc(n.level || 'green')}"></div>
+                </div>`;
+            container.appendChild(item);
+        });
+    }
+
+    // ========================
+    // RENDER: CHAT PHRASES
+    // ========================
+    function renderChatPhrases() {
+        if (!contentData.chat_phrases) contentData.chat_phrases = [];
+        const container = document.getElementById('chat-editor');
+        container.innerHTML = '';
+        contentData.chat_phrases.forEach((p, i) => {
+            const item = document.createElement('div');
+            item.className = 'editor-item';
+            item.innerHTML = `
+                <div class="item-header"><span class="item-number">#${i+1}</span><button class="btn-remove" data-type="chat" data-index="${i}">УДАЛИТЬ</button></div>
+                <div class="field-row">
+                    <div class="field-group"><label>Ключевое слово</label><input type="text" class="full-input chat-key" data-index="${i}" value="${esc(p.key || '')}"></div>
+                    <div class="field-group"><label>Ответы (через | )</label><input type="text" class="full-input chat-responses" data-index="${i}" value="${esc((p.responses || []).join(' | '))}"></div>
+                </div>`;
+            container.appendChild(item);
+        });
+    }
+
+    // ========================
+    // RENDER: CAMERAS
+    // ========================
+    function renderCameras() {
+        if (!contentData.cameras) contentData.cameras = [
+            { id: '1', text: 'Объект лежит на койке.', status: 'stable' },
+            { id: '2', text: '[ СТАТИКА ]', status: 'offline' },
+            { id: '3', text: 'Коридор B-7', status: 'active' },
+        ];
+        const container = document.getElementById('cameras-editor');
+        container.innerHTML = '';
+        contentData.cameras.forEach((cam, i) => {
+            const item = document.createElement('div');
+            item.className = 'editor-item';
+            item.innerHTML = `
+                <div class="item-header"><span class="item-number">CAM-${cam.id || i+1}</span></div>
+                <div class="field-group"><label>Текст камеры</label><textarea class="full-textarea cam-text" data-index="${i}" rows="3">${esc(cam.text || '')}</textarea></div>
+                <div class="field-group"><label>Статус (stable/offline/active)</label><input type="text" class="full-input cam-status" data-index="${i}" value="${esc(cam.status || 'stable')}"></div>`;
+            container.appendChild(item);
+        });
+    }
+
+    // ========================
+    // RENDER: BOOT LINES
+    // ========================
+    function renderBootLines() {
+        if (!contentData.boot_lines) contentData.boot_lines = [];
+        const container = document.getElementById('boot-editor');
+        container.innerHTML = '';
+        contentData.boot_lines.forEach((line, i) => {
+            const item = document.createElement('div');
+            item.className = 'editor-item';
+            item.innerHTML = `
+                <div class="item-header"><span class="item-number">#${i+1}</span><button class="btn-remove" data-type="boot" data-index="${i}">УДАЛИТЬ</button></div>
+                <div class="field-row">
+                    <div class="field-group"><label>Текст</label><input type="text" class="full-input boot-text" data-index="${i}" value="${esc(line.text || '')}"></div>
+                    <div class="field-group"><label>Тип (ok/warn/err)</label><input type="text" class="full-input boot-type" data-index="${i}" value="${esc(line.type || 'ok')}"></div>
+                </div>
+                <div class="field-group"><label>Задержка (мс)</label><input type="number" class="full-input boot-delay" data-index="${i}" value="${line.delay || 400}"></div>`;
+            container.appendChild(item);
+        });
+    }
+
+    // ========================
+    // RENDER: EASTER EGGS
+    // ========================
+    function renderEasterEggs() {
+        if (!contentData.easter_eggs) contentData.easter_eggs = [];
+        const container = document.getElementById('eggs-editor');
+        container.innerHTML = '';
+        contentData.easter_eggs.forEach((egg, i) => {
+            const item = document.createElement('div');
+            item.className = 'editor-item';
+            item.innerHTML = `
+                <div class="item-header"><span class="item-number">#${i+1}</span><button class="btn-remove" data-type="egg" data-index="${i}">УДАЛИТЬ</button></div>
+                <div class="field-row">
+                    <div class="field-group"><label>Триггер</label><input type="text" class="full-input egg-trigger" data-index="${i}" value="${esc(egg.trigger || '')}"></div>
+                    <div class="field-group"><label>Сообщение</label><input type="text" class="full-input egg-message" data-index="${i}" value="${esc(egg.message || '')}"></div>
+                </div>`;
+            container.appendChild(item);
+        });
+    }
+
+    // ========================
+    // STATS
+    // ========================
+    function loadStats() {
+        document.getElementById('stat-visits').textContent = localStorage.getItem('scp_stat_visits') || '0';
+        document.getElementById('stat-o5').textContent = localStorage.getItem('scp_stat_o5') || '0';
+        document.getElementById('stat-screamers').textContent = localStorage.getItem('scp_stat_screamers') || '0';
+    }
+
+    // ========================
     // EVENTS
     // ========================
     function initEvents() {
@@ -300,6 +418,30 @@
             renderPhotos();
         });
 
+        document.getElementById('btn-add-notif').addEventListener('click', () => {
+            contentData.notifications.push({ text: '', level: 'green' });
+            renderNotifications();
+        });
+
+        document.getElementById('btn-add-chat').addEventListener('click', () => {
+            contentData.chat_phrases.push({ key: '', responses: [] });
+            renderChatPhrases();
+        });
+
+        document.getElementById('btn-add-boot').addEventListener('click', () => {
+            contentData.boot_lines.push({ text: '', type: 'ok', delay: 400 });
+            renderBootLines();
+        });
+
+        document.getElementById('btn-add-egg').addEventListener('click', () => {
+            contentData.easter_eggs.push({ trigger: '', message: '' });
+            renderEasterEggs();
+        });
+
+        document.getElementById('btn-preview-full').addEventListener('click', () => {
+            window.open('../index.html', '_blank');
+        });
+
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('btn-remove')) {
                 const type = e.target.dataset.type;
@@ -308,6 +450,10 @@
                 if (type === 'ability') { contentData.abilities.splice(index, 1); renderAbilities(); renderAbilitiesO5(); }
                 if (type === 'incident') { contentData.incidents.splice(index, 1); renderIncidents(); renderIncidentsO5(); }
                 if (type === 'note') { contentData.notes.splice(index, 1); renderNotes(); }
+                if (type === 'notif') { contentData.notifications.splice(index, 1); renderNotifications(); }
+                if (type === 'chat') { contentData.chat_phrases.splice(index, 1); renderChatPhrases(); }
+                if (type === 'boot') { contentData.boot_lines.splice(index, 1); renderBootLines(); }
+                if (type === 'egg') { contentData.easter_eggs.splice(index, 1); renderEasterEggs(); }
             }
         });
 
@@ -402,6 +548,60 @@
         document.querySelectorAll('.note-o5').forEach(el => {
             const i = parseInt(el.dataset.index);
             if (contentData.notes[i]) contentData.notes[i].o5_only = el.checked;
+        });
+
+        // Notifications
+        document.querySelectorAll('.notif-text').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.notifications[i]) contentData.notifications[i].text = el.value;
+        });
+        document.querySelectorAll('.notif-level').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.notifications[i]) contentData.notifications[i].level = el.value;
+        });
+
+        // Chat phrases
+        document.querySelectorAll('.chat-key').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.chat_phrases[i]) contentData.chat_phrases[i].key = el.value;
+        });
+        document.querySelectorAll('.chat-responses').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.chat_phrases[i]) contentData.chat_phrases[i].responses = el.value.split('|').map(s => s.trim()).filter(Boolean);
+        });
+
+        // Cameras
+        document.querySelectorAll('.cam-text').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.cameras[i]) contentData.cameras[i].text = el.value;
+        });
+        document.querySelectorAll('.cam-status').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.cameras[i]) contentData.cameras[i].status = el.value;
+        });
+
+        // Boot lines
+        document.querySelectorAll('.boot-text').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.boot_lines[i]) contentData.boot_lines[i].text = el.value;
+        });
+        document.querySelectorAll('.boot-type').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.boot_lines[i]) contentData.boot_lines[i].type = el.value;
+        });
+        document.querySelectorAll('.boot-delay').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.boot_lines[i]) contentData.boot_lines[i].delay = parseInt(el.value) || 400;
+        });
+
+        // Easter eggs
+        document.querySelectorAll('.egg-trigger').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.easter_eggs[i]) contentData.easter_eggs[i].trigger = el.value;
+        });
+        document.querySelectorAll('.egg-message').forEach(el => {
+            const i = parseInt(el.dataset.index);
+            if (contentData.easter_eggs[i]) contentData.easter_eggs[i].message = el.value;
         });
     }
 

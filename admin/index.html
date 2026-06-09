@@ -40,9 +40,10 @@
 
         <!-- TABS -->
         <div class="tabs-container">
-            <button class="tab active" data-tab="standard">СТАНДАРТНАЯ ВЕРСИЯ</button>
-            <button class="tab" data-tab="o5">O5 ВЕРСИЯ (REVEALED)</button>
-            <button class="tab" data-tab="photos">ФОТОГРАФИИ</button>
+            <button class="tab active" data-tab="standard">СТАНДАРТНАЯ</button>
+            <button class="tab" data-tab="o5">O5 ВЕРСИЯ</button>
+            <button class="tab" data-tab="photos">ФОТО</button>
+            <button class="tab" data-tab="features">ФИЧИ САЙТА</button>
             <button class="tab" data-tab="settings">НАСТРОЙКИ</button>
         </div>
 
@@ -184,6 +185,74 @@
                         <button id="btn-add-photo" class="btn-add">+ Добавить фото</button>
                     </div>
                     <div id="photos-editor" class="photos-grid"></div>
+                </div>
+            </div>
+
+            <!-- TAB: Features -->
+            <div class="tab-panel" id="panel-features">
+                <div class="panel-header">
+                    <h2>Интерактивные функции сайта</h2>
+                    <p class="panel-desc">Управление уведомлениями, чатом, камерами, boot sequence и Easter Eggs.</p>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Уведомления</h3>
+                        <button id="btn-add-notif" class="btn-add">+ Добавить</button>
+                    </div>
+                    <p class="section-hint">Случайные сообщения каждые 10-20 сек. Уровни: green, orange, red, black</p>
+                    <div id="notif-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Фразы объекта (Чат)</h3>
+                        <button id="btn-add-chat" class="btn-add">+ Добавить</button>
+                    </div>
+                    <p class="section-hint">Ключевое слово → возможные ответы (через | )</p>
+                    <div id="chat-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Камеры наблюдения</h3>
+                    </div>
+                    <p class="section-hint">Текст для каждой камеры. Статус: stable / offline / active</p>
+                    <div id="cameras-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Boot Sequence</h3>
+                        <button id="btn-add-boot" class="btn-add">+ Добавить строку</button>
+                    </div>
+                    <p class="section-hint">Строки загрузки. Тип: ok / warn / err. Задержка в мс.</p>
+                    <div id="boot-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="section-header-row">
+                        <h3>Easter Eggs</h3>
+                        <button id="btn-add-egg" class="btn-add">+ Добавить</button>
+                    </div>
+                    <p class="section-hint">Скрытые сообщения. Триггер: konami / logo-click / photo-click</p>
+                    <div id="eggs-editor"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Лог посещений</h3>
+                    <p class="section-hint">Статистика (хранится в localStorage посетителей)</p>
+                    <div class="stats-row">
+                        <div class="stat-box"><div class="stat-value" id="stat-visits">—</div><div class="stat-label">Посещений</div></div>
+                        <div class="stat-box"><div class="stat-value" id="stat-o5">—</div><div class="stat-label">O5 вводов</div></div>
+                        <div class="stat-box"><div class="stat-value" id="stat-screamers">—</div><div class="stat-label">Скримеров</div></div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Предпросмотр</h3>
+                    <p class="section-hint">Откройте сайт в отдельном окне для тестирования</p>
+                    <button id="btn-preview-full" class="btn-action">Открыть превью сайта</button>
                 </div>
             </div>
 
