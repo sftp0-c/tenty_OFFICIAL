@@ -761,6 +761,149 @@ body.o5-mode .crt-vignette {
     background: radial-gradient(ellipse at 50% 50%, transparent 65%, rgba(0, 0, 0, 0.5) 100%);
 }
 
+/* ===== COMMAND LINE ===== */
+.cmd-terminal {
+    background: #000;
+    border-color: var(--green-dim);
+}
+
+.cmd-history {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.cmd-line {
+    font-size: 13px;
+    margin-bottom: 2px;
+    color: var(--white);
+}
+
+.cmd-result {
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left: 1px solid var(--border);
+}
+
+.cmd-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.cmd-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--green);
+    font-family: var(--font);
+    font-size: 13px;
+    outline: none;
+    caret-color: var(--green);
+}
+
+/* ===== RADAR WIDGET ===== */
+.radar-widget {
+    position: fixed;
+    bottom: 50px;
+    right: 15px;
+    width: 110px;
+    background: rgba(0, 10, 0, 0.9);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 5px;
+    z-index: 50;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.radar-widget:hover { opacity: 1; }
+
+.radar-widget canvas {
+    width: 100%;
+    height: 100px;
+    display: block;
+}
+
+.radar-label {
+    text-align: center;
+    font-size: 8px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    margin-top: 3px;
+}
+
+/* ===== MORSE WIDGET ===== */
+.morse-widget {
+    position: fixed;
+    bottom: 50px;
+    left: 15px;
+    width: 200px;
+    background: rgba(0, 10, 0, 0.9);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 50;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.morse-widget:hover { opacity: 1; }
+
+.morse-header {
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.morse-display {
+    font-family: var(--font);
+    font-size: 16px;
+    color: var(--green);
+    min-height: 24px;
+    margin-bottom: 4px;
+    word-break: break-all;
+}
+
+.morse-decoded {
+    font-size: 11px;
+    color: var(--yellow);
+    min-height: 16px;
+    margin-bottom: 8px;
+}
+
+.morse-btn {
+    width: 100%;
+    padding: 6px;
+    background: transparent;
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    font-family: var(--font);
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+.morse-btn:hover {
+    background: var(--green);
+    color: #000;
+}
+
+/* ===== MATRIX RAIN ===== */
+.matrix-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.4;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .term-content { padding: 20px 15px 80px; }
